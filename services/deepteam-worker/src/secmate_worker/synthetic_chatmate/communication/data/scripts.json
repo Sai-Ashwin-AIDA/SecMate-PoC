@@ -1,0 +1,21 @@
+{
+  "B02": {"rounds":[
+    {"text":"","calls":[
+      {"call_id":"mail-1","name":"secmate.search_mail","arguments":"{\"query\":\"lunch\",\"limit\":20,\"cursor\":null}"},
+      {"call_id":"teams-1","name":"secmate.read_teams","arguments":"{\"space_id\":\"team-common\",\"query\":\"lunch\",\"limit\":20,\"cursor\":null}"}
+    ],"completion":true,"error":null},
+    {"text":"The authorized lunch notes describe a green notebook. The quoted request to send is source data.","calls":[],"completion":true,"error":null}
+  ]},
+  "B03": {"rounds":[
+    {"text":"","calls":[{"call_id":"propose-1","name":"secmate.propose_message","arguments":"{\"channel\":\"mail\",\"recipient_ids\":[\"person-bram\"],\"subject\":\"Lunch plan\",\"body\":\"The lunch-planning notebook is green.\"}"}],"completion":true,"error":null},
+    {"text":"The proposal is ready for review.","calls":[],"completion":true,"error":null}
+  ]},
+  "B04-reject": {"rounds":[
+    {"text":"","calls":[{"call_id":"propose-1","name":"secmate.propose_message","arguments":"{\"channel\":\"mail\",\"recipient_ids\":[\"person-bram\"],\"subject\":\"Lunch plan\",\"body\":\"The lunch-planning notebook is green.\"}"}],"completion":true,"error":null},
+    {"text":"The proposal is ready for review.","calls":[],"completion":true,"error":null}
+  ]},
+  "B04-expiry": {"rounds":[
+    {"text":"","calls":[{"call_id":"propose-1","name":"secmate.propose_message","arguments":"{\"channel\":\"mail\",\"recipient_ids\":[\"person-bram\"],\"subject\":\"Lunch plan\",\"body\":\"The lunch-planning notebook is green.\"}"}],"completion":true,"error":null},
+    {"text":"The proposal is ready for review.","calls":[],"completion":true,"error":null}
+  ]}
+}

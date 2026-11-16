@@ -1,0 +1,30 @@
+{
+  "version":"0.2.0",
+  "enabled": {
+    "secmate.conversation.history.read":{"pool":"execution","control":false,"effect":"read","handler_version":"0.1.1"},
+    "secmate.search_mail":{"pool":"fake_provider_read","control":false,"effect":"read","handler_version":"0.2.0"},
+    "secmate.read_teams":{"pool":"fake_provider_read","control":false,"effect":"read","handler_version":"0.2.0"},
+    "secmate.search_directory":{"pool":"fake_provider_read","control":false,"effect":"read","handler_version":"0.2.0"},
+    "secmate.propose_message":{"pool":"execution","control":false,"effect":"write","handler_version":"0.2.0"}
+  },
+  "host_only":{"secmate.action.decide":"ID-plus-decision persisted control run; no model continuation"},
+  "disabled":{
+    "secmate.action.decide":"host-only control, never model-callable",
+    "secmate.read_calendar":"Phase 3 contract and approval required",
+    "secmate.propose_meeting":"Phase 3 contract and approval required",
+    "secmate.memory.control":"Phase 4 contract and approval required",
+    "secmate.memory.learn":"learner policy unresolved",
+    "secmate.run_result.read":"paging output contract deferred",
+    "inference":"scripted-only gate; Nemotron adapter separately authorized",
+    "attacks":"separate approved phase required",
+    "judge":"separate approved phase required",
+    "continuation":"fresh assessments only",
+    "files":"attachments, arbitrary file dispatch and workspace disabled",
+    "scheduled_sends":"not in interactive communication subset",
+    "native_schema_mode":"external schemas UNKNOWN",
+    "dynamic_discovery":"static enabled registry only",
+    "knowledge":"index and access contract deferred",
+    "external_services":"no transport; synthetic local projections only",
+    "multi_write":"at most one write per batch; reject whole multi-write batch"
+  }
+}

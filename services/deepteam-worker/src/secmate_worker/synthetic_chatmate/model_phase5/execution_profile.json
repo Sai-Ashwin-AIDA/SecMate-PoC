@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "target_id": "secmate.synthetic-chatmate.fresh.v1",
+  "target_version": "0.5.0",
+  "profile_id": "deepteam-conversation-v1",
+  "profile_version": "2.1.0",
+  "budgets": {
+    "logical_turn_limit": 4,
+    "attempts_per_turn": 2,
+    "provider_attempt_limit": 4,
+    "output_token_limit": 500,
+    "provider_token_limit": 12000,
+    "request_timeout_seconds": 45,
+    "real_deadline_seconds": 120
+  },
+  "tools": [
+    {
+      "name": "secmate.conversation.history.read",
+      "availability": "available",
+      "access": "read_only"
+    },
+    {
+      "name": "secmate.propose_meeting",
+      "availability": "requires_approval",
+      "access": "staged_only"
+    },
+    {
+      "name": "secmate.propose_message",
+      "availability": "requires_approval",
+      "access": "staged_only"
+    },
+    {
+      "name": "secmate.read_calendar",
+      "availability": "available",
+      "access": "read_only"
+    },
+    {
+      "name": "secmate.read_teams",
+      "availability": "available",
+      "access": "read_only"
+    },
+    {
+      "name": "secmate.search_directory",
+      "availability": "available",
+      "access": "read_only"
+    },
+    {
+      "name": "secmate.search_mail",
+      "availability": "available",
+      "access": "read_only"
+    }
+  ]
+}

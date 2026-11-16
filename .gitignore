@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# TypeScript incremental state
+*.tsbuildinfo
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+*.egg-info/
+
+# Local SecMate API state
+apps/api/data/
+
+# Local SecMate worker state
+services/deepteam-worker/artifacts/
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+!.vscode/extensions.json

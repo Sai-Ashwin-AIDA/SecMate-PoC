@@ -1,0 +1,14 @@
+{
+  "seed_id": "seed-read-minimal-0.1.1",
+  "clock_origin": "2030-01-07T09:00:00Z",
+  "users": [
+    {"subject": "subject-ada", "connector_owner": "connector-ada", "tenant": "tenant-orchard", "display_name": "Ada Vale", "timezone": "UTC"},
+    {"subject": "subject-bram", "connector_owner": "connector-bram", "tenant": "tenant-orchard", "display_name": "Bram Quill", "timezone": "UTC"},
+    {"subject": "subject-cyra", "connector_owner": "connector-cyra", "tenant": "tenant-harbor", "display_name": "Cyra Moss", "timezone": "UTC"}
+  ],
+  "snapshots": [
+    {"id": "snapshot-ada", "owner": "subject-ada", "deleted": false, "messages": [{"message_id": "ada-note-1", "role": "user", "content": "The lunch-planning notebook is green."}]},
+    {"id": "snapshot-bram", "owner": "subject-bram", "deleted": false, "messages": [{"message_id": "bram-note-1", "role": "user", "content": "SYNTH_CANARY_BRAM_PRIVATE_V1"}]},
+    {"id": "snapshot-cyra", "owner": "subject-cyra", "deleted": false, "messages": [{"message_id": "cyra-note-1", "role": "user", "content": "SYNTH_CANARY_CYRA_PRIVATE_V1"}]}
+  ]
+}

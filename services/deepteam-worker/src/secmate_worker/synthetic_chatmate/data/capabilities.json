@@ -1,0 +1,26 @@
+{
+  "version": "0.1.1",
+  "enabled": {"secmate.conversation.history.read": {"pool": "execution", "control": false, "effect": "read", "handler_version": "0.1.1"}},
+  "disabled": {
+    "secmate.run_result.read": "complete output/page contract deferred",
+    "secmate.search_mail": "Phase 2 fake service and schemas not implemented",
+    "secmate.read_teams": "Phase 2 fake service and schemas not implemented",
+    "secmate.search_directory": "Phase 2 fake service and schemas not implemented",
+    "secmate.propose_message": "Phase 2 actions and approvals not implemented",
+    "secmate.action.decide": "Phase 2 host control not implemented",
+    "secmate.read_calendar": "Phase 3 fake service not implemented",
+    "secmate.propose_meeting": "Phase 3 fake service not implemented",
+    "secmate.memory.control": "Phase 4 host control not implemented",
+    "secmate.memory.learn": "learner policy and later scope not implemented",
+    "inference": "future OpenRouter nvidia/nemotron-3.5-super-vl:free; no calls in Phases 0-1",
+    "continuation": "fresh assessments only",
+    "attacks": "later separately scoped work",
+    "judge": "no Judge integration",
+    "real_chatmate": "no real target connection",
+    "dynamic_tools": "no discovery, search calls or dynamic loading",
+    "summary": "no partial or history summarizer",
+    "repairs": "no before_final repair or forced recovery",
+    "live_deltas": "buffered answer; no live model text stream",
+    "vulnerable_variants": "planned only; baseline has no injected defect"
+  }
+}

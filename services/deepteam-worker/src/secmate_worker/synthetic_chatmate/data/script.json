@@ -1,0 +1,1 @@
+{"rounds":[{"text":"","calls":[{"call_id":"read-1","name":"secmate.conversation.history.read","arguments":"{\"message_id\":\"ada-note-1\",\"offset\":0}"}],"completion":true,"error":null},{"text":"The lunch-planning notebook is green.","calls":[],"completion":true,"error":null}]}

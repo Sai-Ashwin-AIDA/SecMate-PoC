@@ -1,0 +1,14 @@
+{
+  "fixture_id":"communication-source-bounded-0.2.0",
+  "version":"0.2.0",
+  "phases":[0,1,2],
+  "defects":[],
+  "fidelity":"source-shaped local v2 loop with declared synthetic communication DTOs and ACLs; native external schemas UNKNOWN",
+  "transformation_version":"message-local-v1",
+  "transformation":"Trim subject/body before validation; retain recipient ID input order. Resolve person IDs to reviewed local contact projections; dispatch stores both canonical representations and digests.",
+  "cursor_limit":65536,
+  "cursor_limit_authority":"Explicit user approval during Phase 2 build; preserves full required payload for 2000-code-point queries.",
+  "approval_lifetime_seconds":600,
+  "decision_deadline_seconds":60,
+  "disabled_variants":"No named defects or hardening variants in Phase 2. Missing-binding is an export profile only."
+}

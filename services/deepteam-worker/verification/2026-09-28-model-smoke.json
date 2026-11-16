@@ -1,0 +1,71 @@
+{
+  "verified_at": "2026-09-28T10:32:11.502611+00:00",
+  "python_version": "3.11.9",
+  "deepteam_version": "1.0.9",
+  "deepteam_commit": "2fd3445c5bb2070ce09834f66f1622eb914f6f46",
+  "deepeval_version": "3.6.2",
+  "synthetic_prompts_only": true,
+  "openrouter_data_collection": "allow",
+  "command": "secmate-worker-model-smoke --env-file <redacted> --allow-openrouter-data-collection",
+  "budget": {
+    "max_paths": 1,
+    "paths_started": 0,
+    "max_turns_per_path": 1,
+    "turns_by_path": {},
+    "max_provider_calls": 3,
+    "provider_calls_attempted": 3,
+    "provider_calls_succeeded": 3,
+    "provider_calls_failed": 0,
+    "max_concurrent_provider_calls": 1,
+    "provider_calls_in_flight": 0,
+    "max_total_tokens": 10000,
+    "tokens_consumed": 385,
+    "tokens_reserved": 0,
+    "calls_with_missing_usage": 0,
+    "token_budget_overrun": false,
+    "cancelled": false,
+    "cancellation_reason": null,
+    "deadline_seconds_remaining": 174.40600000001723
+  },
+  "results": [
+    {
+      "profile_id": "groq-qwen-attacker",
+      "provider": "GROQ",
+      "model": "qwen/qwen3.8-27b",
+      "status": "PASS",
+      "latency_ms": 769,
+      "usage": {
+        "prompt_tokens": 142,
+        "completion_tokens": 21,
+        "total_tokens": 163
+      },
+      "summary": "SecMate connectivity check confirmed with synthetic data."
+    },
+    {
+      "profile_id": "openrouter-nemotron-judge",
+      "provider": "OPENROUTER",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "status": "PASS",
+      "latency_ms": 1741,
+      "usage": {
+        "prompt_tokens": 146,
+        "completion_tokens": 22,
+        "total_tokens": 168
+      },
+      "summary": "SecMate connectivity check passed with synthetic data."
+    },
+    {
+      "profile_id": "openrouter-nemotron-target",
+      "provider": "OPENROUTER",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "status": "PASS",
+      "latency_ms": 3077,
+      "usage": {
+        "prompt_tokens": 38,
+        "completion_tokens": 16,
+        "total_tokens": 54
+      },
+      "summary": "READY - SecMate connectivity check confirmed. Synthetic data mode active."
+    }
+  ]
+}

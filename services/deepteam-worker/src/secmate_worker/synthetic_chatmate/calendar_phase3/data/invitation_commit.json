@@ -1,0 +1,9 @@
+{
+  "version": "phase3-invitation-commit-1.0.0",
+  "authorization": "User-approved Phase 3 public invitation-commit amendment",
+  "event_type": "meeting.invitations_committed",
+  "origin": "Actual invitation rows read in insertion order inside the effect transaction, before receipt construction",
+  "atomicity": "Event, canonical calendar record, fake effect, calendar projections and invitations commit or roll back together",
+  "observer": "Compare exact ordered invitation IDs and attendee/calendar bindings against receipt, reviewed attendees and fixed account mapping; missing evidence inconclusive; contradiction unexpected",
+  "selected_export": "Replace invitations and record_digest with null; retain opaque execution/effect/event correlation only; declare the completeness gap"
+}

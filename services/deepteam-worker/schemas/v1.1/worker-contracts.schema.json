@@ -1,0 +1,6491 @@
+{
+  "$id": "https://secmate.internal/schemas/deepteam-worker/v1.1/bundle.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "contracts": {
+    "AssessmentSpec": {
+      "$defs": {
+        "AssessmentPolicy": {
+          "additionalProperties": false,
+          "properties": {
+            "policy_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Z0-9_:-]+$",
+              "title": "Policy Id",
+              "type": "string"
+            },
+            "statement": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Statement",
+              "type": "string"
+            }
+          },
+          "required": [
+            "policy_id",
+            "statement"
+          ],
+          "title": "AssessmentPolicy",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "attack_objective": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Attack Objective",
+          "type": "string"
+        },
+        "compromise_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Compromise Criteria",
+          "type": "array"
+        },
+        "expected_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Expected Evidence",
+          "type": "array"
+        },
+        "inconclusive_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Inconclusive Criteria",
+          "type": "array"
+        },
+        "policies": {
+          "items": {
+            "$ref": "#/$defs/AssessmentPolicy"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Policies",
+          "type": "array"
+        },
+        "prohibited_outcome": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Prohibited Outcome",
+          "type": "string"
+        },
+        "resistance_criteria": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Resistance Criteria",
+          "type": "array"
+        },
+        "spec_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Spec Id",
+          "type": "string"
+        },
+        "spec_version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Spec Version",
+          "type": "string"
+        },
+        "target_capabilities": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Target Capabilities",
+          "type": "array"
+        },
+        "target_profile_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Target Profile Id",
+          "type": "string"
+        },
+        "target_purpose": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Target Purpose",
+          "type": "string"
+        },
+        "vulnerability_category": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Vulnerability Category",
+          "type": "string"
+        },
+        "vulnerability_definition": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Vulnerability Definition",
+          "type": "string"
+        },
+        "vulnerability_name": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Vulnerability Name",
+          "type": "string"
+        },
+        "vulnerability_profile_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Vulnerability Profile Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "spec_id",
+        "spec_version",
+        "vulnerability_profile_id",
+        "vulnerability_name",
+        "vulnerability_category",
+        "vulnerability_definition",
+        "target_profile_id",
+        "target_purpose",
+        "target_capabilities",
+        "prohibited_outcome",
+        "attack_objective",
+        "compromise_criteria",
+        "resistance_criteria",
+        "inconclusive_criteria",
+        "expected_evidence",
+        "policies"
+      ],
+      "title": "AssessmentSpec",
+      "type": "object"
+    },
+    "AttackCriticReview": {
+      "additionalProperties": false,
+      "properties": {
+        "boundary_pressure": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Boundary Pressure",
+          "type": "integer"
+        },
+        "boundary_relevance": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Boundary Relevance",
+          "type": "integer"
+        },
+        "duplicate_strategy_penalty": {
+          "maximum": 20,
+          "minimum": 0,
+          "title": "Duplicate Strategy Penalty",
+          "type": "integer"
+        },
+        "evidence_quality": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Evidence Quality",
+          "type": "integer"
+        },
+        "execution_efficiency": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Execution Efficiency",
+          "type": "integer"
+        },
+        "expected_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 5,
+          "minItems": 1,
+          "title": "Expected Evidence",
+          "type": "array"
+        },
+        "failure_analysis": {
+          "minLength": 1,
+          "title": "Failure Analysis",
+          "type": "string"
+        },
+        "model_profile_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Model Profile Id",
+          "type": "string"
+        },
+        "must_not_repeat": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Must Not Repeat",
+          "type": "array"
+        },
+        "recommended_attack_method": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Recommended Attack Method",
+          "type": "string"
+        },
+        "recommended_objective": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Recommended Objective",
+          "type": "string"
+        },
+        "review_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Review Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1",
+          "enum": [
+            "1.0",
+            "1.1"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "strategy_novelty": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Strategy Novelty",
+          "type": "integer"
+        },
+        "target_adaptation": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Target Adaptation",
+          "type": "integer"
+        },
+        "unexplored_boundaries": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Unexplored Boundaries",
+          "type": "array"
+        }
+      },
+      "required": [
+        "review_id",
+        "model_profile_id",
+        "boundary_relevance",
+        "strategy_novelty",
+        "boundary_pressure",
+        "evidence_quality",
+        "target_adaptation",
+        "execution_efficiency",
+        "duplicate_strategy_penalty",
+        "failure_analysis",
+        "unexplored_boundaries",
+        "must_not_repeat",
+        "recommended_attack_method",
+        "recommended_objective",
+        "expected_evidence"
+      ],
+      "title": "AttackCriticReview",
+      "type": "object"
+    },
+    "AttackPath": {
+      "$defs": {
+        "ConversationTurn": {
+          "additionalProperties": false,
+          "properties": {
+            "latency_ms": {
+              "minimum": 0,
+              "title": "Latency Ms",
+              "type": "integer"
+            },
+            "manual_collection": {
+              "items": {
+                "$ref": "#/$defs/ManualChatMateEvidence"
+              },
+              "maxItems": 1,
+              "title": "Manual Collection",
+              "type": "array"
+            },
+            "probe": {
+              "minLength": 1,
+              "title": "Probe",
+              "type": "string"
+            },
+            "retrieval_decisions": {
+              "items": {
+                "$ref": "#/$defs/RetrievalDecisionEvidence"
+              },
+              "title": "Retrieval Decisions",
+              "type": "array"
+            },
+            "retrieval_evidence": {
+              "items": {
+                "$ref": "#/$defs/RetrievalEvidence"
+              },
+              "title": "Retrieval Evidence",
+              "type": "array"
+            },
+            "target_response": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Target Response"
+            },
+            "tool_attempts": {
+              "items": {
+                "$ref": "#/$defs/ToolAttempt"
+              },
+              "title": "Tool Attempts",
+              "type": "array"
+            },
+            "turn_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Turn Id",
+              "type": "string"
+            },
+            "turn_number": {
+              "maximum": 5,
+              "minimum": 1,
+              "title": "Turn Number",
+              "type": "integer"
+            },
+            "usage": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/TokenUsage"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            }
+          },
+          "required": [
+            "turn_id",
+            "turn_number",
+            "probe",
+            "latency_ms"
+          ],
+          "title": "ConversationTurn",
+          "type": "object"
+        },
+        "DeepTeamEngineResult": {
+          "additionalProperties": false,
+          "properties": {
+            "deepeval_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Deepeval Version",
+              "type": "string"
+            },
+            "engine_commit": {
+              "maxLength": 40,
+              "minLength": 40,
+              "title": "Engine Commit",
+              "type": "string"
+            },
+            "engine_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Engine Version",
+              "type": "string"
+            },
+            "error": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Error"
+            },
+            "evaluation_cost": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Evaluation Cost"
+            },
+            "final_outcome_authority": {
+              "const": "SECMATE_REVIEW",
+              "default": "SECMATE_REVIEW",
+              "title": "Final Outcome Authority",
+              "type": "string"
+            },
+            "native_evaluator_profile_id": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Native Evaluator Profile Id"
+            },
+            "native_progression": {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "title": "Native Progression",
+              "type": "array"
+            },
+            "native_reason": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Native Reason"
+            },
+            "native_score": {
+              "anyOf": [
+                {
+                  "maximum": 1,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Native Score"
+            },
+            "native_score_scale": {
+              "const": "0_TO_1",
+              "default": "0_TO_1",
+              "title": "Native Score Scale",
+              "type": "string"
+            },
+            "raw_result": {
+              "additionalProperties": true,
+              "title": "Raw Result",
+              "type": "object"
+            },
+            "simulation_cost": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Simulation Cost"
+            },
+            "stopping_category": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Stopping Category"
+            }
+          },
+          "required": [
+            "engine_version",
+            "engine_commit",
+            "deepeval_version",
+            "raw_result"
+          ],
+          "title": "DeepTeamEngineResult",
+          "type": "object"
+        },
+        "InterceptionDecision": {
+          "enum": [
+            "INTERCEPTED_NOT_EXECUTED",
+            "SIMULATED",
+            "REJECTED"
+          ],
+          "title": "InterceptionDecision",
+          "type": "string"
+        },
+        "ManualChatMateEvidence": {
+          "additionalProperties": false,
+          "properties": {
+            "batch_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Batch Id",
+              "type": "string"
+            },
+            "candidate_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Candidate Id",
+              "type": "string"
+            },
+            "candidate_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Candidate Sha256",
+              "type": "string"
+            },
+            "collection_method": {
+              "const": "MANUAL_COPY_PASTE",
+              "default": "MANUAL_COPY_PASTE",
+              "title": "Collection Method",
+              "type": "string"
+            },
+            "correlation_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Correlation Sha256",
+              "type": "string"
+            },
+            "evidence_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Evidence Id",
+              "type": "string"
+            },
+            "failure_reason": {
+              "anyOf": [
+                {
+                  "const": "RESPONSE_COULD_NOT_BE_COMPLETED",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Failure Reason"
+            },
+            "judge_data_collection_attested": {
+              "title": "Judge Data Collection Attested",
+              "type": "boolean"
+            },
+            "observation_captured_verbatim": {
+              "const": true,
+              "title": "Observation Captured Verbatim",
+              "type": "boolean"
+            },
+            "outcome": {
+              "enum": [
+                "RESPONSE",
+                "VISIBLE_FAILURE"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "persisted_response_sha256": {
+              "anyOf": [
+                {
+                  "pattern": "^[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Persisted Response Sha256"
+            },
+            "prompt_sent_at": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Prompt Sent At"
+            },
+            "prompt_submitted_unchanged": {
+              "const": true,
+              "title": "Prompt Submitted Unchanged",
+              "type": "boolean"
+            },
+            "redacted_response_text": {
+              "anyOf": [
+                {
+                  "maxLength": 20000,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Redacted Response Text"
+            },
+            "redaction_applied": {
+              "title": "Redaction Applied",
+              "type": "boolean"
+            },
+            "response_observed_at": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Response Observed At"
+            },
+            "run_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Run Id",
+              "type": "string"
+            },
+            "submitted_at": {
+              "format": "date-time",
+              "title": "Submitted At",
+              "type": "string"
+            }
+          },
+          "required": [
+            "evidence_id",
+            "run_id",
+            "batch_id",
+            "candidate_id",
+            "candidate_sha256",
+            "outcome",
+            "correlation_sha256",
+            "submitted_at",
+            "prompt_submitted_unchanged",
+            "observation_captured_verbatim",
+            "redaction_applied",
+            "judge_data_collection_attested"
+          ],
+          "title": "ManualChatMateEvidence",
+          "type": "object"
+        },
+        "OracleOutcome": {
+          "enum": [
+            "NO_HARD_VIOLATION",
+            "CONFIRMED_VIOLATION",
+            "INSUFFICIENT_EVIDENCE",
+            "ERROR"
+          ],
+          "title": "OracleOutcome",
+          "type": "string"
+        },
+        "OracleResult": {
+          "additionalProperties": false,
+          "properties": {
+            "detail": {
+              "minLength": 1,
+              "title": "Detail",
+              "type": "string"
+            },
+            "evidence_references": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Evidence References",
+              "type": "array"
+            },
+            "oracle_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Oracle Id",
+              "type": "string"
+            },
+            "oracle_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Oracle Version",
+              "type": "string"
+            },
+            "outcome": {
+              "$ref": "#/$defs/OracleOutcome"
+            },
+            "severity": {
+              "$ref": "#/$defs/Severity"
+            }
+          },
+          "required": [
+            "oracle_id",
+            "oracle_version",
+            "outcome",
+            "severity",
+            "detail"
+          ],
+          "title": "OracleResult",
+          "type": "object"
+        },
+        "PathStatus": {
+          "enum": [
+            "PLANNED",
+            "RUNNING",
+            "RESISTED",
+            "COMPROMISED",
+            "INCONCLUSIVE",
+            "ERROR"
+          ],
+          "title": "PathStatus",
+          "type": "string"
+        },
+        "RetrievalDecisionEvidence": {
+          "additionalProperties": false,
+          "properties": {
+            "decision": {
+              "enum": [
+                "IGNORED_UNTRUSTED_INSTRUCTION",
+                "FOLLOWED_UNTRUSTED_INSTRUCTION"
+              ],
+              "title": "Decision",
+              "type": "string"
+            },
+            "detail": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Detail",
+              "type": "string"
+            },
+            "evidence_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Evidence Id",
+              "type": "string"
+            },
+            "retrieval_evidence_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Retrieval Evidence Id",
+              "type": "string"
+            },
+            "synthetic_data_only": {
+              "const": true,
+              "default": true,
+              "title": "Synthetic Data Only",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "evidence_id",
+            "retrieval_evidence_id",
+            "decision",
+            "detail"
+          ],
+          "title": "RetrievalDecisionEvidence",
+          "type": "object"
+        },
+        "RetrievalEvidence": {
+          "additionalProperties": false,
+          "properties": {
+            "canary_ids": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 20,
+              "title": "Canary Ids",
+              "type": "array"
+            },
+            "channel": {
+              "const": "TEAMS_SHAREPOINT_DOCUMENT",
+              "title": "Channel",
+              "type": "string"
+            },
+            "content_hash": {
+              "pattern": "^[A-F0-9]{64}$",
+              "title": "Content Hash",
+              "type": "string"
+            },
+            "evidence_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Evidence Id",
+              "type": "string"
+            },
+            "injection_fixture": {
+              "default": false,
+              "title": "Injection Fixture",
+              "type": "boolean"
+            },
+            "redacted_content": {
+              "maxLength": 20000,
+              "minLength": 1,
+              "title": "Redacted Content",
+              "type": "string"
+            },
+            "source_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Source Id",
+              "type": "string"
+            },
+            "synthetic_data_only": {
+              "const": true,
+              "default": true,
+              "title": "Synthetic Data Only",
+              "type": "boolean"
+            },
+            "trust_classification": {
+              "const": "UNTRUSTED_RETRIEVED_CONTENT",
+              "title": "Trust Classification",
+              "type": "string"
+            }
+          },
+          "required": [
+            "evidence_id",
+            "source_id",
+            "channel",
+            "trust_classification",
+            "content_hash",
+            "redacted_content"
+          ],
+          "title": "RetrievalEvidence",
+          "type": "object"
+        },
+        "Severity": {
+          "enum": [
+            "NONE",
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "TokenUsage": {
+          "additionalProperties": false,
+          "properties": {
+            "completion_tokens": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Completion Tokens"
+            },
+            "prompt_tokens": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Prompt Tokens"
+            },
+            "total_tokens": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Total Tokens"
+            }
+          },
+          "title": "TokenUsage",
+          "type": "object"
+        },
+        "ToolAttempt": {
+          "additionalProperties": false,
+          "properties": {
+            "authorization": {
+              "$ref": "#/$defs/TrustedAuthorizationContext"
+            },
+            "category": {
+              "$ref": "#/$defs/ToolCategory"
+            },
+            "decision": {
+              "$ref": "#/$defs/InterceptionDecision"
+            },
+            "destination": {
+              "maxLength": 512,
+              "minLength": 1,
+              "title": "Destination",
+              "type": "string"
+            },
+            "evidence_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Evidence Id",
+              "type": "string"
+            },
+            "original_arguments": {
+              "additionalProperties": true,
+              "title": "Original Arguments",
+              "type": "object"
+            },
+            "redacted_arguments": {
+              "additionalProperties": true,
+              "title": "Redacted Arguments",
+              "type": "object"
+            },
+            "simulated_result": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Simulated Result"
+            },
+            "synthetic_data_only": {
+              "const": true,
+              "default": true,
+              "title": "Synthetic Data Only",
+              "type": "boolean"
+            },
+            "tool_name": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Tool Name",
+              "type": "string"
+            },
+            "tool_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Tool Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "evidence_id",
+            "tool_name",
+            "tool_version",
+            "category",
+            "original_arguments",
+            "redacted_arguments",
+            "authorization",
+            "destination",
+            "decision"
+          ],
+          "title": "ToolAttempt",
+          "type": "object"
+        },
+        "ToolCategory": {
+          "enum": [
+            "READ_ONLY",
+            "CONTAINMENT",
+            "MUTATION",
+            "ADMINISTRATIVE"
+          ],
+          "title": "ToolCategory",
+          "type": "string"
+        },
+        "TrustedAuthorizationContext": {
+          "additionalProperties": false,
+          "properties": {
+            "approval_reference": {
+              "anyOf": [
+                {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Approval Reference"
+            },
+            "approval_source": {
+              "enum": [
+                "TRUSTED_APPLICATION",
+                "USER_SUPPLIED",
+                "NONE"
+              ],
+              "title": "Approval Source",
+              "type": "string"
+            },
+            "approval_valid": {
+              "title": "Approval Valid",
+              "type": "boolean"
+            },
+            "caller_role": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Caller Role",
+              "type": "string"
+            }
+          },
+          "required": [
+            "caller_role",
+            "approval_source",
+            "approval_valid"
+          ],
+          "title": "TrustedAuthorizationContext",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "attack_method": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Attack Method",
+          "type": "string"
+        },
+        "campaign_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Campaign Id",
+          "type": "string"
+        },
+        "completed_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completed At"
+        },
+        "engine_result": {
+          "$ref": "#/$defs/DeepTeamEngineResult"
+        },
+        "objective": {
+          "minLength": 1,
+          "title": "Objective",
+          "type": "string"
+        },
+        "oracle_results": {
+          "items": {
+            "$ref": "#/$defs/OracleResult"
+          },
+          "title": "Oracle Results",
+          "type": "array"
+        },
+        "path_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Path Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1",
+          "enum": [
+            "1.0",
+            "1.1"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sequence_number": {
+          "minimum": 1,
+          "title": "Sequence Number",
+          "type": "integer"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/PathStatus"
+        },
+        "success_condition": {
+          "minLength": 1,
+          "title": "Success Condition",
+          "type": "string"
+        },
+        "turns": {
+          "items": {
+            "$ref": "#/$defs/ConversationTurn"
+          },
+          "title": "Turns",
+          "type": "array"
+        },
+        "vulnerability_type": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Vulnerability Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path_id",
+        "campaign_id",
+        "sequence_number",
+        "vulnerability_type",
+        "attack_method",
+        "objective",
+        "success_condition",
+        "status",
+        "started_at",
+        "turns",
+        "oracle_results",
+        "engine_result"
+      ],
+      "title": "AttackPath",
+      "type": "object"
+    },
+    "Campaign": {
+      "$defs": {
+        "AssessmentPolicy": {
+          "additionalProperties": false,
+          "properties": {
+            "policy_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Z0-9_:-]+$",
+              "title": "Policy Id",
+              "type": "string"
+            },
+            "statement": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Statement",
+              "type": "string"
+            }
+          },
+          "required": [
+            "policy_id",
+            "statement"
+          ],
+          "title": "AssessmentPolicy",
+          "type": "object"
+        },
+        "AssessmentSpec": {
+          "additionalProperties": false,
+          "properties": {
+            "attack_objective": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Attack Objective",
+              "type": "string"
+            },
+            "compromise_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Compromise Criteria",
+              "type": "array"
+            },
+            "expected_evidence": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Expected Evidence",
+              "type": "array"
+            },
+            "inconclusive_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Inconclusive Criteria",
+              "type": "array"
+            },
+            "policies": {
+              "items": {
+                "$ref": "#/$defs/AssessmentPolicy"
+              },
+              "maxItems": 20,
+              "minItems": 1,
+              "title": "Policies",
+              "type": "array"
+            },
+            "prohibited_outcome": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Prohibited Outcome",
+              "type": "string"
+            },
+            "resistance_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Resistance Criteria",
+              "type": "array"
+            },
+            "spec_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Spec Id",
+              "type": "string"
+            },
+            "spec_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Spec Version",
+              "type": "string"
+            },
+            "target_capabilities": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 20,
+              "minItems": 1,
+              "title": "Target Capabilities",
+              "type": "array"
+            },
+            "target_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Target Profile Id",
+              "type": "string"
+            },
+            "target_purpose": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "title": "Target Purpose",
+              "type": "string"
+            },
+            "vulnerability_category": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Vulnerability Category",
+              "type": "string"
+            },
+            "vulnerability_definition": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "title": "Vulnerability Definition",
+              "type": "string"
+            },
+            "vulnerability_name": {
+              "maxLength": 256,
+              "minLength": 1,
+              "title": "Vulnerability Name",
+              "type": "string"
+            },
+            "vulnerability_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Vulnerability Profile Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "spec_id",
+            "spec_version",
+            "vulnerability_profile_id",
+            "vulnerability_name",
+            "vulnerability_category",
+            "vulnerability_definition",
+            "target_profile_id",
+            "target_purpose",
+            "target_capabilities",
+            "prohibited_outcome",
+            "attack_objective",
+            "compromise_criteria",
+            "resistance_criteria",
+            "inconclusive_criteria",
+            "expected_evidence",
+            "policies"
+          ],
+          "title": "AssessmentSpec",
+          "type": "object"
+        },
+        "CampaignBudget": {
+          "additionalProperties": false,
+          "properties": {
+            "max_concurrent_provider_calls": {
+              "default": 1,
+              "maximum": 20,
+              "minimum": 1,
+              "title": "Max Concurrent Provider Calls",
+              "type": "integer"
+            },
+            "max_paths": {
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Max Paths",
+              "type": "integer"
+            },
+            "max_provider_calls": {
+              "minimum": 1,
+              "title": "Max Provider Calls",
+              "type": "integer"
+            },
+            "max_retries_per_call": {
+              "maximum": 5,
+              "minimum": 0,
+              "title": "Max Retries Per Call",
+              "type": "integer"
+            },
+            "max_total_tokens": {
+              "minimum": 1,
+              "title": "Max Total Tokens",
+              "type": "integer"
+            },
+            "max_turns_per_path": {
+              "maximum": 5,
+              "minimum": 1,
+              "title": "Max Turns Per Path",
+              "type": "integer"
+            },
+            "timeout_seconds": {
+              "minimum": 1,
+              "title": "Timeout Seconds",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "max_paths",
+            "max_turns_per_path",
+            "max_provider_calls",
+            "max_total_tokens",
+            "timeout_seconds",
+            "max_retries_per_call"
+          ],
+          "title": "CampaignBudget",
+          "type": "object"
+        },
+        "EvidencePolicy": {
+          "additionalProperties": false,
+          "properties": {
+            "allow_external_upload": {
+              "const": false,
+              "default": false,
+              "title": "Allow External Upload",
+              "type": "boolean"
+            },
+            "persist_provider_credentials": {
+              "const": false,
+              "default": false,
+              "title": "Persist Provider Credentials",
+              "type": "boolean"
+            },
+            "persist_target_credentials": {
+              "const": false,
+              "default": false,
+              "title": "Persist Target Credentials",
+              "type": "boolean"
+            },
+            "synthetic_only": {
+              "const": true,
+              "default": true,
+              "title": "Synthetic Only",
+              "type": "boolean"
+            }
+          },
+          "title": "EvidencePolicy",
+          "type": "object"
+        },
+        "ModelProfileSnapshot": {
+          "additionalProperties": false,
+          "properties": {
+            "model": {
+              "maxLength": 256,
+              "minLength": 1,
+              "title": "Model",
+              "type": "string"
+            },
+            "profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Profile Id",
+              "type": "string"
+            },
+            "profile_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Profile Version",
+              "type": "string"
+            },
+            "provider": {
+              "$ref": "#/$defs/ProviderName"
+            },
+            "role": {
+              "$ref": "#/$defs/ModelRole"
+            },
+            "temperature": {
+              "maximum": 2,
+              "minimum": 0,
+              "title": "Temperature",
+              "type": "number"
+            }
+          },
+          "required": [
+            "profile_id",
+            "profile_version",
+            "role",
+            "provider",
+            "model",
+            "temperature"
+          ],
+          "title": "ModelProfileSnapshot",
+          "type": "object"
+        },
+        "ModelRole": {
+          "enum": [
+            "ATTACKER",
+            "DEEPTEAM_EVALUATOR",
+            "TARGET",
+            "TARGET_EVALUATOR",
+            "ATTACK_CRITIC"
+          ],
+          "title": "ModelRole",
+          "type": "string"
+        },
+        "ProviderName": {
+          "enum": [
+            "GROQ",
+            "OPENROUTER",
+            "LOCAL"
+          ],
+          "title": "ProviderName",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "model_profiles": {
+                "contains": {
+                  "properties": {
+                    "provider": {
+                      "const": "LOCAL"
+                    }
+                  },
+                  "required": [
+                    "provider"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "model_profiles"
+            ]
+          },
+          "then": {
+            "properties": {
+              "schema_version": {
+                "const": "1.1"
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "allowed_attack_methods": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Allowed Attack Methods",
+          "type": "array"
+        },
+        "assessment_spec": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AssessmentSpec"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "budget": {
+          "$ref": "#/$defs/CampaignBudget"
+        },
+        "campaign_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Campaign Id",
+          "type": "string"
+        },
+        "campaign_version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Campaign Version",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "evidence_policy": {
+          "$ref": "#/$defs/EvidencePolicy"
+        },
+        "expected_boundary": {
+          "minLength": 1,
+          "title": "Expected Boundary",
+          "type": "string"
+        },
+        "model_profiles": {
+          "items": {
+            "$ref": "#/$defs/ModelProfileSnapshot"
+          },
+          "minItems": 4,
+          "title": "Model Profiles",
+          "type": "array"
+        },
+        "scenario_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "scenario_version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Scenario Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1",
+          "enum": [
+            "1.0",
+            "1.1"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target_profile_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Target Profile Id",
+          "type": "string"
+        },
+        "target_profile_version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Target Profile Version",
+          "type": "string"
+        },
+        "target_purpose": {
+          "minLength": 1,
+          "title": "Target Purpose",
+          "type": "string"
+        },
+        "vulnerability_types": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Vulnerability Types",
+          "type": "array"
+        }
+      },
+      "required": [
+        "campaign_id",
+        "campaign_version",
+        "created_at",
+        "scenario_id",
+        "scenario_version",
+        "target_profile_id",
+        "target_profile_version",
+        "target_purpose",
+        "expected_boundary",
+        "vulnerability_types",
+        "allowed_attack_methods",
+        "model_profiles",
+        "budget"
+      ],
+      "title": "Campaign",
+      "type": "object"
+    },
+    "ChatMateCandidateBatch": {
+      "$defs": {
+        "AssessmentPolicy": {
+          "additionalProperties": false,
+          "properties": {
+            "policy_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Z0-9_:-]+$",
+              "title": "Policy Id",
+              "type": "string"
+            },
+            "statement": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Statement",
+              "type": "string"
+            }
+          },
+          "required": [
+            "policy_id",
+            "statement"
+          ],
+          "title": "AssessmentPolicy",
+          "type": "object"
+        },
+        "AssessmentSpec": {
+          "additionalProperties": false,
+          "properties": {
+            "attack_objective": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Attack Objective",
+              "type": "string"
+            },
+            "compromise_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Compromise Criteria",
+              "type": "array"
+            },
+            "expected_evidence": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Expected Evidence",
+              "type": "array"
+            },
+            "inconclusive_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Inconclusive Criteria",
+              "type": "array"
+            },
+            "policies": {
+              "items": {
+                "$ref": "#/$defs/AssessmentPolicy"
+              },
+              "maxItems": 20,
+              "minItems": 1,
+              "title": "Policies",
+              "type": "array"
+            },
+            "prohibited_outcome": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Prohibited Outcome",
+              "type": "string"
+            },
+            "resistance_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Resistance Criteria",
+              "type": "array"
+            },
+            "spec_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Spec Id",
+              "type": "string"
+            },
+            "spec_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Spec Version",
+              "type": "string"
+            },
+            "target_capabilities": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 20,
+              "minItems": 1,
+              "title": "Target Capabilities",
+              "type": "array"
+            },
+            "target_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Target Profile Id",
+              "type": "string"
+            },
+            "target_purpose": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "title": "Target Purpose",
+              "type": "string"
+            },
+            "vulnerability_category": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Vulnerability Category",
+              "type": "string"
+            },
+            "vulnerability_definition": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "title": "Vulnerability Definition",
+              "type": "string"
+            },
+            "vulnerability_name": {
+              "maxLength": 256,
+              "minLength": 1,
+              "title": "Vulnerability Name",
+              "type": "string"
+            },
+            "vulnerability_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Vulnerability Profile Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "spec_id",
+            "spec_version",
+            "vulnerability_profile_id",
+            "vulnerability_name",
+            "vulnerability_category",
+            "vulnerability_definition",
+            "target_profile_id",
+            "target_purpose",
+            "target_capabilities",
+            "prohibited_outcome",
+            "attack_objective",
+            "compromise_criteria",
+            "resistance_criteria",
+            "inconclusive_criteria",
+            "expected_evidence",
+            "policies"
+          ],
+          "title": "AssessmentSpec",
+          "type": "object"
+        },
+        "ChatMateBaselineMethodReview": {
+          "additionalProperties": false,
+          "properties": {
+            "candidate_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Candidate Id",
+              "type": "string"
+            },
+            "prompt_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Prompt Sha256",
+              "type": "string"
+            },
+            "reviewer_instruction_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Reviewer Instruction Sha256",
+              "type": "string"
+            },
+            "reviewer_instruction_version": {
+              "const": "baseline-method-review-v1",
+              "title": "Reviewer Instruction Version",
+              "type": "string"
+            },
+            "verdict": {
+              "enum": [
+                "ALIGNED",
+                "NOT_ALIGNED",
+                "UNCERTAIN"
+              ],
+              "title": "Verdict",
+              "type": "string"
+            }
+          },
+          "required": [
+            "candidate_id",
+            "prompt_sha256",
+            "verdict",
+            "reviewer_instruction_version",
+            "reviewer_instruction_sha256"
+          ],
+          "title": "ChatMateBaselineMethodReview",
+          "type": "object"
+        },
+        "ChatMateCandidateExplanation": {
+          "additionalProperties": false,
+          "properties": {
+            "approach": {
+              "maxLength": 240,
+              "minLength": 1,
+              "title": "Approach",
+              "type": "string"
+            },
+            "intended_effect": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Intended Effect",
+              "type": "string"
+            },
+            "limitations": {
+              "items": {
+                "maxLength": 500,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 3,
+              "minItems": 1,
+              "title": "Limitations",
+              "type": "array"
+            },
+            "selection_reason": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Selection Reason",
+              "type": "string"
+            },
+            "strengths": {
+              "items": {
+                "maxLength": 500,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 3,
+              "minItems": 1,
+              "title": "Strengths",
+              "type": "array"
+            }
+          },
+          "required": [
+            "approach",
+            "intended_effect",
+            "selection_reason",
+            "strengths",
+            "limitations"
+          ],
+          "title": "ChatMateCandidateExplanation",
+          "type": "object"
+        },
+        "ChatMateCandidateProvenance": {
+          "additionalProperties": false,
+          "properties": {
+            "assessment_spec_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Assessment Spec Sha256",
+              "type": "string"
+            },
+            "attacker_model": {
+              "const": "qwen/qwen3.8-27b",
+              "title": "Attacker Model",
+              "type": "string"
+            },
+            "attacker_profile_id": {
+              "const": "groq-qwen-attacker",
+              "title": "Attacker Profile Id",
+              "type": "string"
+            },
+            "attacker_provider": {
+              "const": "GROQ",
+              "title": "Attacker Provider",
+              "type": "string"
+            },
+            "attacker_system_instruction_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Attacker System Instruction Sha256",
+              "type": "string"
+            },
+            "deepeval_version": {
+              "const": "3.6.2",
+              "title": "Deepeval Version",
+              "type": "string"
+            },
+            "deepteam_commit": {
+              "maxLength": 40,
+              "minLength": 40,
+              "title": "Deepteam Commit",
+              "type": "string"
+            },
+            "deepteam_version": {
+              "const": "1.0.9",
+              "title": "Deepteam Version",
+              "type": "string"
+            },
+            "follow_up_context_sha256": {
+              "anyOf": [
+                {
+                  "pattern": "^[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Follow Up Context Sha256"
+            },
+            "generation_guidelines_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Generation Guidelines Sha256",
+              "type": "string"
+            },
+            "source_input_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Source Input Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "deepteam_version",
+            "deepteam_commit",
+            "deepeval_version",
+            "attacker_profile_id",
+            "attacker_provider",
+            "attacker_model",
+            "assessment_spec_sha256",
+            "attacker_system_instruction_sha256",
+            "generation_guidelines_sha256",
+            "source_input_sha256"
+          ],
+          "title": "ChatMateCandidateProvenance",
+          "type": "object"
+        },
+        "ChatMatePromptCandidate": {
+          "additionalProperties": false,
+          "properties": {
+            "attack_method": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Attack Method",
+              "type": "string"
+            },
+            "attack_profile_id": {
+              "enum": [
+                "prompt-injection-v1",
+                "system-override-v1",
+                "prompt-probing-v1",
+                "goal-redirection-v1",
+                "context-poisoning-v1"
+              ],
+              "title": "Attack Profile Id",
+              "type": "string"
+            },
+            "candidate_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Candidate Id",
+              "type": "string"
+            },
+            "explanation": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/ChatMateCandidateExplanation"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "generation_mode": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "BASELINE_DIRECT",
+                    "BASELINE_METHOD_ALIGNED",
+                    "BASELINE_METHOD_REVIEWED"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Generation Mode"
+            },
+            "method_review": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/ChatMateBaselineMethodReview"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "ordinal": {
+              "maximum": 3,
+              "minimum": 1,
+              "title": "Ordinal",
+              "type": "integer"
+            },
+            "prompt": {
+              "maxLength": 20000,
+              "minLength": 1,
+              "title": "Prompt",
+              "type": "string"
+            },
+            "prompt_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Prompt Sha256",
+              "type": "string"
+            },
+            "source_prompt": {
+              "maxLength": 20000,
+              "minLength": 1,
+              "title": "Source Prompt",
+              "type": "string"
+            },
+            "source_prompt_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Source Prompt Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "candidate_id",
+            "ordinal",
+            "attack_profile_id",
+            "attack_method",
+            "source_prompt",
+            "source_prompt_sha256",
+            "prompt",
+            "prompt_sha256"
+          ],
+          "title": "ChatMatePromptCandidate",
+          "type": "object"
+        },
+        "DiversityReference": {
+          "additionalProperties": false,
+          "properties": {
+            "prompt": {
+              "maxLength": 20000,
+              "minLength": 1,
+              "title": "Prompt",
+              "type": "string"
+            },
+            "prompt_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Prompt Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "prompt",
+            "prompt_sha256"
+          ],
+          "title": "DiversityReference",
+          "type": "object"
+        },
+        "FollowUpContext": {
+          "additionalProperties": false,
+          "properties": {
+            "assessment_spec_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Assessment Spec Sha256",
+              "type": "string"
+            },
+            "critic_review_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Critic Review Id",
+              "type": "string"
+            },
+            "expected_evidence": {
+              "items": {
+                "maxLength": 2000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Expected Evidence",
+              "type": "array"
+            },
+            "objective": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "title": "Objective",
+              "type": "string"
+            },
+            "parent_candidates": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/$defs/DiversityReference"
+                  },
+                  "maxItems": 3,
+                  "minItems": 1,
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Parent Candidates"
+            },
+            "parent_run_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Parent Run Id",
+              "type": "string"
+            },
+            "recommendation_policy": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "boundary-preserving-v1",
+                    "single-turn-continuation-v1"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Recommendation Policy"
+            },
+            "recommended_attack_profile_id": {
+              "enum": [
+                "prompt-injection-v1",
+                "system-override-v1",
+                "prompt-probing-v1",
+                "goal-redirection-v1",
+                "context-poisoning-v1"
+              ],
+              "title": "Recommended Attack Profile Id",
+              "type": "string"
+            },
+            "source_candidate_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Source Candidate Sha256",
+              "type": "string"
+            },
+            "source_correlation_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Source Correlation Sha256",
+              "type": "string"
+            },
+            "source_evaluation_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Source Evaluation Id",
+              "type": "string"
+            },
+            "source_judge_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Source Judge Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "parent_run_id",
+            "critic_review_id",
+            "source_evaluation_id",
+            "source_candidate_sha256",
+            "source_correlation_sha256",
+            "source_judge_sha256",
+            "assessment_spec_sha256",
+            "recommended_attack_profile_id",
+            "objective",
+            "expected_evidence"
+          ],
+          "title": "FollowUpContext",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "assessment_spec": {
+          "$ref": "#/$defs/AssessmentSpec"
+        },
+        "attack_method": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Attack Method",
+          "type": "string"
+        },
+        "attack_profile_id": {
+          "enum": [
+            "prompt-injection-v1",
+            "system-override-v1",
+            "prompt-probing-v1",
+            "goal-redirection-v1",
+            "context-poisoning-v1"
+          ],
+          "title": "Attack Profile Id",
+          "type": "string"
+        },
+        "batch_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Batch Id",
+          "type": "string"
+        },
+        "candidates": {
+          "items": {
+            "$ref": "#/$defs/ChatMatePromptCandidate"
+          },
+          "maxItems": 3,
+          "minItems": 2,
+          "title": "Candidates",
+          "type": "array"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "follow_up_context": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FollowUpContext"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "provenance": {
+          "$ref": "#/$defs/ChatMateCandidateProvenance"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target_name": {
+          "const": "ChatMate",
+          "default": "ChatMate",
+          "title": "Target Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "batch_id",
+        "created_at",
+        "attack_profile_id",
+        "attack_method",
+        "assessment_spec",
+        "candidates",
+        "provenance"
+      ],
+      "title": "ChatMateCandidateBatch",
+      "type": "object"
+    },
+    "ChatMateCriticFailure": {
+      "$defs": {
+        "CriticFailureAttempt": {
+          "additionalProperties": false,
+          "properties": {
+            "error_code": {
+              "enum": [
+                "AUTHENTICATION",
+                "RATE_LIMITED",
+                "ROUTE_UNAVAILABLE",
+                "PROVIDER_UNAVAILABLE",
+                "REQUEST_TIMEOUT",
+                "CONNECT_TIMEOUT",
+                "READ_TIMEOUT",
+                "WRITE_TIMEOUT",
+                "POOL_TIMEOUT",
+                "NETWORK_ERROR",
+                "REQUEST_REJECTED",
+                "INVALID_JSON",
+                "MALFORMED_RESPONSE",
+                "SCHEMA_VALIDATION",
+                "BUDGET_EXHAUSTED",
+                "CALL_BUDGET_EXHAUSTED",
+                "TOKEN_BUDGET_EXHAUSTED",
+                "DEADLINE_EXCEEDED",
+                "CONFIGURATION",
+                "INPUT_INVALID",
+                "ARTIFACT_INVALID",
+                "RUNTIME_ERROR",
+                "START_GATE_TIMEOUT"
+              ],
+              "title": "Error Code",
+              "type": "string"
+            },
+            "latency_ms": {
+              "default": 0,
+              "maximum": 3600000,
+              "minimum": 0,
+              "title": "Latency Ms",
+              "type": "integer"
+            },
+            "model": {
+              "const": "qwen/qwen3.8-27b",
+              "default": "qwen/qwen3.8-27b",
+              "title": "Model",
+              "type": "string"
+            },
+            "outcome": {
+              "const": "FAILURE",
+              "default": "FAILURE",
+              "title": "Outcome",
+              "type": "string"
+            },
+            "profile_id": {
+              "const": "groq-qwen-critic",
+              "default": "groq-qwen-critic",
+              "title": "Profile Id",
+              "type": "string"
+            },
+            "provider": {
+              "const": "GROQ",
+              "default": "GROQ",
+              "title": "Provider",
+              "type": "string"
+            },
+            "provider_error_code": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "json_validate_failed",
+                    "model_not_found",
+                    "model_decommissioned",
+                    "invalid_request_error",
+                    "unsupported_parameter",
+                    "invalid_parameter",
+                    "context_length_exceeded",
+                    "content_policy_violation",
+                    "permission_denied",
+                    "insufficient_quota",
+                    "rate_limit_exceeded"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Provider Error Code"
+            },
+            "provider_error_param": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "response_format",
+                    "json_schema",
+                    "max_completion_tokens",
+                    "max_tokens",
+                    "reasoning_effort",
+                    "messages",
+                    "model",
+                    "temperature",
+                    "stream",
+                    "tools",
+                    "tool_choice"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Provider Error Param"
+            },
+            "provider_error_type": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "invalid_request_error",
+                    "authentication_error",
+                    "rate_limit_error",
+                    "permission_error",
+                    "server_error",
+                    "api_error"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Provider Error Type"
+            },
+            "retryable": {
+              "default": false,
+              "title": "Retryable",
+              "type": "boolean"
+            },
+            "role": {
+              "const": "ATTACK_CRITIC",
+              "default": "ATTACK_CRITIC",
+              "title": "Role",
+              "type": "string"
+            },
+            "status_code": {
+              "anyOf": [
+                {
+                  "maximum": 599,
+                  "minimum": 100,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Status Code"
+            }
+          },
+          "required": [
+            "error_code"
+          ],
+          "title": "CriticFailureAttempt",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "critic_review_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Critic Review Id"
+        },
+        "error_code": {
+          "enum": [
+            "AUTHENTICATION",
+            "RATE_LIMITED",
+            "ROUTE_UNAVAILABLE",
+            "PROVIDER_UNAVAILABLE",
+            "REQUEST_TIMEOUT",
+            "CONNECT_TIMEOUT",
+            "READ_TIMEOUT",
+            "WRITE_TIMEOUT",
+            "POOL_TIMEOUT",
+            "NETWORK_ERROR",
+            "REQUEST_REJECTED",
+            "INVALID_JSON",
+            "MALFORMED_RESPONSE",
+            "SCHEMA_VALIDATION",
+            "BUDGET_EXHAUSTED",
+            "CALL_BUDGET_EXHAUSTED",
+            "TOKEN_BUDGET_EXHAUSTED",
+            "DEADLINE_EXCEEDED",
+            "CONFIGURATION",
+            "INPUT_INVALID",
+            "ARTIFACT_INVALID",
+            "RUNTIME_ERROR",
+            "START_GATE_TIMEOUT"
+          ],
+          "title": "Error Code",
+          "type": "string"
+        },
+        "execution_kind": {
+          "const": "MANUAL_CHATMATE_CRITIC",
+          "default": "MANUAL_CHATMATE_CRITIC",
+          "title": "Execution Kind",
+          "type": "string"
+        },
+        "model_attempts": {
+          "items": {
+            "$ref": "#/$defs/CriticFailureAttempt"
+          },
+          "maxItems": 1,
+          "title": "Model Attempts",
+          "type": "array"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_input_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Input Sha256"
+        }
+      },
+      "required": [
+        "error_code"
+      ],
+      "title": "ChatMateCriticFailure",
+      "type": "object"
+    },
+    "ChatMateCriticReview": {
+      "additionalProperties": false,
+      "properties": {
+        "attack_effectiveness_analysis": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Attack Effectiveness Analysis",
+          "type": "string"
+        },
+        "budget": {
+          "additionalProperties": true,
+          "title": "Budget",
+          "type": "object"
+        },
+        "created_at": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Created At",
+          "type": "string"
+        },
+        "critic_data_collection_attested": {
+          "title": "Critic Data Collection Attested",
+          "type": "boolean"
+        },
+        "critic_review_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Critic Review Id",
+          "type": "string"
+        },
+        "critic_system_instruction_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Critic System Instruction Sha256",
+          "type": "string"
+        },
+        "critic_user_prompt_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Critic User Prompt Sha256",
+          "type": "string"
+        },
+        "evidence_references": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Evidence References",
+          "type": "array"
+        },
+        "expected_evidence": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Expected Evidence",
+          "type": "array"
+        },
+        "invalid_evidence_references": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Invalid Evidence References",
+          "type": "array"
+        },
+        "invalid_policy_references": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Invalid Policy References",
+          "type": "array"
+        },
+        "management_summary": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Management Summary",
+          "type": "string"
+        },
+        "model": {
+          "const": "qwen/qwen3.8-27b",
+          "default": "qwen/qwen3.8-27b",
+          "title": "Model",
+          "type": "string"
+        },
+        "model_attempts": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "maxItems": 1,
+          "minItems": 1,
+          "title": "Model Attempts",
+          "type": "array"
+        },
+        "observed_weak_point": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observed Weak Point"
+        },
+        "outcome_analysis": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Outcome Analysis",
+          "type": "string"
+        },
+        "policy_references": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Policy References",
+          "type": "array"
+        },
+        "profile_id": {
+          "const": "groq-qwen-critic",
+          "default": "groq-qwen-critic",
+          "title": "Profile Id",
+          "type": "string"
+        },
+        "provider": {
+          "const": "GROQ",
+          "default": "GROQ",
+          "title": "Provider",
+          "type": "string"
+        },
+        "recommendation_available": {
+          "title": "Recommendation Available",
+          "type": "boolean"
+        },
+        "recommended_attack_profile_id": {
+          "enum": [
+            "prompt-injection-v1",
+            "system-override-v1",
+            "prompt-probing-v1",
+            "goal-redirection-v1",
+            "context-poisoning-v1"
+          ],
+          "title": "Recommended Attack Profile Id",
+          "type": "string"
+        },
+        "recommended_follow_up_objective": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Recommended Follow Up Objective",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "enum": [
+            "1.0",
+            "1.1"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_candidate_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Candidate Sha256",
+          "type": "string"
+        },
+        "source_correlation_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Correlation Sha256",
+          "type": "string"
+        },
+        "source_evaluation_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Evaluation Id",
+          "type": "string"
+        },
+        "source_input_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Input Sha256",
+          "type": "string"
+        },
+        "source_judge_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Judge Sha256",
+          "type": "string"
+        },
+        "weak_point_status": {
+          "enum": [
+            "NONE_OBSERVED",
+            "HYPOTHESIS",
+            "EVIDENCE_SUPPORTED"
+          ],
+          "title": "Weak Point Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attack_effectiveness_analysis",
+        "outcome_analysis",
+        "observed_weak_point",
+        "weak_point_status",
+        "management_summary",
+        "recommended_attack_profile_id",
+        "recommended_follow_up_objective",
+        "expected_evidence",
+        "evidence_references",
+        "policy_references",
+        "critic_review_id",
+        "run_id",
+        "source_evaluation_id",
+        "created_at",
+        "source_candidate_sha256",
+        "source_correlation_sha256",
+        "source_judge_sha256",
+        "source_input_sha256",
+        "critic_system_instruction_sha256",
+        "critic_user_prompt_sha256",
+        "invalid_evidence_references",
+        "invalid_policy_references",
+        "recommendation_available",
+        "budget",
+        "model_attempts",
+        "critic_data_collection_attested"
+      ],
+      "title": "ChatMateCriticReview",
+      "type": "object"
+    },
+    "EvidenceBundle": {
+      "$defs": {
+        "AttackCriticReview": {
+          "additionalProperties": false,
+          "properties": {
+            "boundary_pressure": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Boundary Pressure",
+              "type": "integer"
+            },
+            "boundary_relevance": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Boundary Relevance",
+              "type": "integer"
+            },
+            "duplicate_strategy_penalty": {
+              "maximum": 20,
+              "minimum": 0,
+              "title": "Duplicate Strategy Penalty",
+              "type": "integer"
+            },
+            "evidence_quality": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Evidence Quality",
+              "type": "integer"
+            },
+            "execution_efficiency": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Execution Efficiency",
+              "type": "integer"
+            },
+            "expected_evidence": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 5,
+              "minItems": 1,
+              "title": "Expected Evidence",
+              "type": "array"
+            },
+            "failure_analysis": {
+              "minLength": 1,
+              "title": "Failure Analysis",
+              "type": "string"
+            },
+            "model_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Model Profile Id",
+              "type": "string"
+            },
+            "must_not_repeat": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Must Not Repeat",
+              "type": "array"
+            },
+            "recommended_attack_method": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Recommended Attack Method",
+              "type": "string"
+            },
+            "recommended_objective": {
+              "maxLength": 512,
+              "minLength": 1,
+              "title": "Recommended Objective",
+              "type": "string"
+            },
+            "review_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Review Id",
+              "type": "string"
+            },
+            "schema_version": {
+              "default": "1.1",
+              "enum": [
+                "1.0",
+                "1.1"
+              ],
+              "title": "Schema Version",
+              "type": "string"
+            },
+            "strategy_novelty": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Strategy Novelty",
+              "type": "integer"
+            },
+            "target_adaptation": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Target Adaptation",
+              "type": "integer"
+            },
+            "unexplored_boundaries": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Unexplored Boundaries",
+              "type": "array"
+            }
+          },
+          "required": [
+            "review_id",
+            "model_profile_id",
+            "boundary_relevance",
+            "strategy_novelty",
+            "boundary_pressure",
+            "evidence_quality",
+            "target_adaptation",
+            "execution_efficiency",
+            "duplicate_strategy_penalty",
+            "failure_analysis",
+            "unexplored_boundaries",
+            "must_not_repeat",
+            "recommended_attack_method",
+            "recommended_objective",
+            "expected_evidence"
+          ],
+          "title": "AttackCriticReview",
+          "type": "object"
+        },
+        "AttackPath": {
+          "additionalProperties": false,
+          "properties": {
+            "attack_method": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Attack Method",
+              "type": "string"
+            },
+            "campaign_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Campaign Id",
+              "type": "string"
+            },
+            "completed_at": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Completed At"
+            },
+            "engine_result": {
+              "$ref": "#/$defs/DeepTeamEngineResult"
+            },
+            "objective": {
+              "minLength": 1,
+              "title": "Objective",
+              "type": "string"
+            },
+            "oracle_results": {
+              "items": {
+                "$ref": "#/$defs/OracleResult"
+              },
+              "title": "Oracle Results",
+              "type": "array"
+            },
+            "path_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Path Id",
+              "type": "string"
+            },
+            "schema_version": {
+              "default": "1.1",
+              "enum": [
+                "1.0",
+                "1.1"
+              ],
+              "title": "Schema Version",
+              "type": "string"
+            },
+            "sequence_number": {
+              "minimum": 1,
+              "title": "Sequence Number",
+              "type": "integer"
+            },
+            "started_at": {
+              "format": "date-time",
+              "title": "Started At",
+              "type": "string"
+            },
+            "status": {
+              "$ref": "#/$defs/PathStatus"
+            },
+            "success_condition": {
+              "minLength": 1,
+              "title": "Success Condition",
+              "type": "string"
+            },
+            "turns": {
+              "items": {
+                "$ref": "#/$defs/ConversationTurn"
+              },
+              "title": "Turns",
+              "type": "array"
+            },
+            "vulnerability_type": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Vulnerability Type",
+              "type": "string"
+            }
+          },
+          "required": [
+            "path_id",
+            "campaign_id",
+            "sequence_number",
+            "vulnerability_type",
+            "attack_method",
+            "objective",
+            "success_condition",
+            "status",
+            "started_at",
+            "turns",
+            "oracle_results",
+            "engine_result"
+          ],
+          "title": "AttackPath",
+          "type": "object"
+        },
+        "ConversationTurn": {
+          "additionalProperties": false,
+          "properties": {
+            "latency_ms": {
+              "minimum": 0,
+              "title": "Latency Ms",
+              "type": "integer"
+            },
+            "manual_collection": {
+              "items": {
+                "$ref": "#/$defs/ManualChatMateEvidence"
+              },
+              "maxItems": 1,
+              "title": "Manual Collection",
+              "type": "array"
+            },
+            "probe": {
+              "minLength": 1,
+              "title": "Probe",
+              "type": "string"
+            },
+            "retrieval_decisions": {
+              "items": {
+                "$ref": "#/$defs/RetrievalDecisionEvidence"
+              },
+              "title": "Retrieval Decisions",
+              "type": "array"
+            },
+            "retrieval_evidence": {
+              "items": {
+                "$ref": "#/$defs/RetrievalEvidence"
+              },
+              "title": "Retrieval Evidence",
+              "type": "array"
+            },
+            "target_response": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Target Response"
+            },
+            "tool_attempts": {
+              "items": {
+                "$ref": "#/$defs/ToolAttempt"
+              },
+              "title": "Tool Attempts",
+              "type": "array"
+            },
+            "turn_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Turn Id",
+              "type": "string"
+            },
+            "turn_number": {
+              "maximum": 5,
+              "minimum": 1,
+              "title": "Turn Number",
+              "type": "integer"
+            },
+            "usage": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/TokenUsage"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            }
+          },
+          "required": [
+            "turn_id",
+            "turn_number",
+            "probe",
+            "latency_ms"
+          ],
+          "title": "ConversationTurn",
+          "type": "object"
+        },
+        "DeepTeamEngineResult": {
+          "additionalProperties": false,
+          "properties": {
+            "deepeval_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Deepeval Version",
+              "type": "string"
+            },
+            "engine_commit": {
+              "maxLength": 40,
+              "minLength": 40,
+              "title": "Engine Commit",
+              "type": "string"
+            },
+            "engine_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Engine Version",
+              "type": "string"
+            },
+            "error": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Error"
+            },
+            "evaluation_cost": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Evaluation Cost"
+            },
+            "final_outcome_authority": {
+              "const": "SECMATE_REVIEW",
+              "default": "SECMATE_REVIEW",
+              "title": "Final Outcome Authority",
+              "type": "string"
+            },
+            "native_evaluator_profile_id": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Native Evaluator Profile Id"
+            },
+            "native_progression": {
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "title": "Native Progression",
+              "type": "array"
+            },
+            "native_reason": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Native Reason"
+            },
+            "native_score": {
+              "anyOf": [
+                {
+                  "maximum": 1,
+                  "minimum": 0,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Native Score"
+            },
+            "native_score_scale": {
+              "const": "0_TO_1",
+              "default": "0_TO_1",
+              "title": "Native Score Scale",
+              "type": "string"
+            },
+            "raw_result": {
+              "additionalProperties": true,
+              "title": "Raw Result",
+              "type": "object"
+            },
+            "simulation_cost": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Simulation Cost"
+            },
+            "stopping_category": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Stopping Category"
+            }
+          },
+          "required": [
+            "engine_version",
+            "engine_commit",
+            "deepeval_version",
+            "raw_result"
+          ],
+          "title": "DeepTeamEngineResult",
+          "type": "object"
+        },
+        "InterceptionDecision": {
+          "enum": [
+            "INTERCEPTED_NOT_EXECUTED",
+            "SIMULATED",
+            "REJECTED"
+          ],
+          "title": "InterceptionDecision",
+          "type": "string"
+        },
+        "ManualChatMateEvidence": {
+          "additionalProperties": false,
+          "properties": {
+            "batch_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Batch Id",
+              "type": "string"
+            },
+            "candidate_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Candidate Id",
+              "type": "string"
+            },
+            "candidate_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Candidate Sha256",
+              "type": "string"
+            },
+            "collection_method": {
+              "const": "MANUAL_COPY_PASTE",
+              "default": "MANUAL_COPY_PASTE",
+              "title": "Collection Method",
+              "type": "string"
+            },
+            "correlation_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Correlation Sha256",
+              "type": "string"
+            },
+            "evidence_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Evidence Id",
+              "type": "string"
+            },
+            "failure_reason": {
+              "anyOf": [
+                {
+                  "const": "RESPONSE_COULD_NOT_BE_COMPLETED",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Failure Reason"
+            },
+            "judge_data_collection_attested": {
+              "title": "Judge Data Collection Attested",
+              "type": "boolean"
+            },
+            "observation_captured_verbatim": {
+              "const": true,
+              "title": "Observation Captured Verbatim",
+              "type": "boolean"
+            },
+            "outcome": {
+              "enum": [
+                "RESPONSE",
+                "VISIBLE_FAILURE"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "persisted_response_sha256": {
+              "anyOf": [
+                {
+                  "pattern": "^[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Persisted Response Sha256"
+            },
+            "prompt_sent_at": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Prompt Sent At"
+            },
+            "prompt_submitted_unchanged": {
+              "const": true,
+              "title": "Prompt Submitted Unchanged",
+              "type": "boolean"
+            },
+            "redacted_response_text": {
+              "anyOf": [
+                {
+                  "maxLength": 20000,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Redacted Response Text"
+            },
+            "redaction_applied": {
+              "title": "Redaction Applied",
+              "type": "boolean"
+            },
+            "response_observed_at": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Response Observed At"
+            },
+            "run_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Run Id",
+              "type": "string"
+            },
+            "submitted_at": {
+              "format": "date-time",
+              "title": "Submitted At",
+              "type": "string"
+            }
+          },
+          "required": [
+            "evidence_id",
+            "run_id",
+            "batch_id",
+            "candidate_id",
+            "candidate_sha256",
+            "outcome",
+            "correlation_sha256",
+            "submitted_at",
+            "prompt_submitted_unchanged",
+            "observation_captured_verbatim",
+            "redaction_applied",
+            "judge_data_collection_attested"
+          ],
+          "title": "ManualChatMateEvidence",
+          "type": "object"
+        },
+        "OracleOutcome": {
+          "enum": [
+            "NO_HARD_VIOLATION",
+            "CONFIRMED_VIOLATION",
+            "INSUFFICIENT_EVIDENCE",
+            "ERROR"
+          ],
+          "title": "OracleOutcome",
+          "type": "string"
+        },
+        "OracleResult": {
+          "additionalProperties": false,
+          "properties": {
+            "detail": {
+              "minLength": 1,
+              "title": "Detail",
+              "type": "string"
+            },
+            "evidence_references": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Evidence References",
+              "type": "array"
+            },
+            "oracle_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Oracle Id",
+              "type": "string"
+            },
+            "oracle_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Oracle Version",
+              "type": "string"
+            },
+            "outcome": {
+              "$ref": "#/$defs/OracleOutcome"
+            },
+            "severity": {
+              "$ref": "#/$defs/Severity"
+            }
+          },
+          "required": [
+            "oracle_id",
+            "oracle_version",
+            "outcome",
+            "severity",
+            "detail"
+          ],
+          "title": "OracleResult",
+          "type": "object"
+        },
+        "PathReviewResult": {
+          "additionalProperties": false,
+          "properties": {
+            "authoritative_evidence_references": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Authoritative Evidence References",
+              "type": "array"
+            },
+            "critic_review": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/AttackCriticReview"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "decision": {
+              "$ref": "#/$defs/ReviewDecision"
+            },
+            "next_attack_method": {
+              "anyOf": [
+                {
+                  "maxLength": 128,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Next Attack Method"
+            },
+            "path_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Path Id",
+              "type": "string"
+            },
+            "schema_version": {
+              "default": "1.1",
+              "enum": [
+                "1.0",
+                "1.1"
+              ],
+              "title": "Schema Version",
+              "type": "string"
+            },
+            "target_evaluation": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/TargetEvaluation"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            }
+          },
+          "required": [
+            "path_id",
+            "decision",
+            "authoritative_evidence_references"
+          ],
+          "title": "PathReviewResult",
+          "type": "object"
+        },
+        "PathStatus": {
+          "enum": [
+            "PLANNED",
+            "RUNNING",
+            "RESISTED",
+            "COMPROMISED",
+            "INCONCLUSIVE",
+            "ERROR"
+          ],
+          "title": "PathStatus",
+          "type": "string"
+        },
+        "RetrievalDecisionEvidence": {
+          "additionalProperties": false,
+          "properties": {
+            "decision": {
+              "enum": [
+                "IGNORED_UNTRUSTED_INSTRUCTION",
+                "FOLLOWED_UNTRUSTED_INSTRUCTION"
+              ],
+              "title": "Decision",
+              "type": "string"
+            },
+            "detail": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Detail",
+              "type": "string"
+            },
+            "evidence_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Evidence Id",
+              "type": "string"
+            },
+            "retrieval_evidence_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Retrieval Evidence Id",
+              "type": "string"
+            },
+            "synthetic_data_only": {
+              "const": true,
+              "default": true,
+              "title": "Synthetic Data Only",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "evidence_id",
+            "retrieval_evidence_id",
+            "decision",
+            "detail"
+          ],
+          "title": "RetrievalDecisionEvidence",
+          "type": "object"
+        },
+        "RetrievalEvidence": {
+          "additionalProperties": false,
+          "properties": {
+            "canary_ids": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 20,
+              "title": "Canary Ids",
+              "type": "array"
+            },
+            "channel": {
+              "const": "TEAMS_SHAREPOINT_DOCUMENT",
+              "title": "Channel",
+              "type": "string"
+            },
+            "content_hash": {
+              "pattern": "^[A-F0-9]{64}$",
+              "title": "Content Hash",
+              "type": "string"
+            },
+            "evidence_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Evidence Id",
+              "type": "string"
+            },
+            "injection_fixture": {
+              "default": false,
+              "title": "Injection Fixture",
+              "type": "boolean"
+            },
+            "redacted_content": {
+              "maxLength": 20000,
+              "minLength": 1,
+              "title": "Redacted Content",
+              "type": "string"
+            },
+            "source_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Source Id",
+              "type": "string"
+            },
+            "synthetic_data_only": {
+              "const": true,
+              "default": true,
+              "title": "Synthetic Data Only",
+              "type": "boolean"
+            },
+            "trust_classification": {
+              "const": "UNTRUSTED_RETRIEVED_CONTENT",
+              "title": "Trust Classification",
+              "type": "string"
+            }
+          },
+          "required": [
+            "evidence_id",
+            "source_id",
+            "channel",
+            "trust_classification",
+            "content_hash",
+            "redacted_content"
+          ],
+          "title": "RetrievalEvidence",
+          "type": "object"
+        },
+        "ReviewDecision": {
+          "enum": [
+            "COMPROMISED",
+            "CONTINUE",
+            "RESISTED",
+            "INCONCLUSIVE",
+            "ERROR"
+          ],
+          "title": "ReviewDecision",
+          "type": "string"
+        },
+        "Severity": {
+          "enum": [
+            "NONE",
+            "LOW",
+            "MEDIUM",
+            "HIGH",
+            "CRITICAL"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "TargetEvaluation": {
+          "additionalProperties": false,
+          "properties": {
+            "category": {
+              "$ref": "#/$defs/TargetEvaluationCategory"
+            },
+            "confidence": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Confidence",
+              "type": "number"
+            },
+            "deviation_score": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Deviation Score",
+              "type": "integer"
+            },
+            "evaluation_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Evaluation Id",
+              "type": "string"
+            },
+            "evidence_references": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Evidence References",
+              "type": "array"
+            },
+            "invalid_evidence_references": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Invalid Evidence References",
+              "type": "array"
+            },
+            "invalid_policy_references": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Invalid Policy References",
+              "type": "array"
+            },
+            "missing_evidence": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Missing Evidence",
+              "type": "array"
+            },
+            "model_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Model Profile Id",
+              "type": "string"
+            },
+            "policy_references": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Policy References",
+              "type": "array"
+            },
+            "reasoning": {
+              "minLength": 1,
+              "title": "Reasoning",
+              "type": "string"
+            },
+            "schema_version": {
+              "default": "1.1",
+              "enum": [
+                "1.0",
+                "1.1"
+              ],
+              "title": "Schema Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "evaluation_id",
+            "model_profile_id",
+            "category",
+            "deviation_score",
+            "confidence",
+            "evidence_references",
+            "policy_references",
+            "reasoning",
+            "missing_evidence"
+          ],
+          "title": "TargetEvaluation",
+          "type": "object"
+        },
+        "TargetEvaluationCategory": {
+          "enum": [
+            "ALIGNED",
+            "MINOR_DEVIATION",
+            "CONCERNING_DEVIATION",
+            "MAJOR_DEVIATION",
+            "COMPROMISED"
+          ],
+          "title": "TargetEvaluationCategory",
+          "type": "string"
+        },
+        "TokenUsage": {
+          "additionalProperties": false,
+          "properties": {
+            "completion_tokens": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Completion Tokens"
+            },
+            "prompt_tokens": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Prompt Tokens"
+            },
+            "total_tokens": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Total Tokens"
+            }
+          },
+          "title": "TokenUsage",
+          "type": "object"
+        },
+        "ToolAttempt": {
+          "additionalProperties": false,
+          "properties": {
+            "authorization": {
+              "$ref": "#/$defs/TrustedAuthorizationContext"
+            },
+            "category": {
+              "$ref": "#/$defs/ToolCategory"
+            },
+            "decision": {
+              "$ref": "#/$defs/InterceptionDecision"
+            },
+            "destination": {
+              "maxLength": 512,
+              "minLength": 1,
+              "title": "Destination",
+              "type": "string"
+            },
+            "evidence_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Evidence Id",
+              "type": "string"
+            },
+            "original_arguments": {
+              "additionalProperties": true,
+              "title": "Original Arguments",
+              "type": "object"
+            },
+            "redacted_arguments": {
+              "additionalProperties": true,
+              "title": "Redacted Arguments",
+              "type": "object"
+            },
+            "simulated_result": {
+              "anyOf": [
+                {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Simulated Result"
+            },
+            "synthetic_data_only": {
+              "const": true,
+              "default": true,
+              "title": "Synthetic Data Only",
+              "type": "boolean"
+            },
+            "tool_name": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Tool Name",
+              "type": "string"
+            },
+            "tool_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Tool Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "evidence_id",
+            "tool_name",
+            "tool_version",
+            "category",
+            "original_arguments",
+            "redacted_arguments",
+            "authorization",
+            "destination",
+            "decision"
+          ],
+          "title": "ToolAttempt",
+          "type": "object"
+        },
+        "ToolCategory": {
+          "enum": [
+            "READ_ONLY",
+            "CONTAINMENT",
+            "MUTATION",
+            "ADMINISTRATIVE"
+          ],
+          "title": "ToolCategory",
+          "type": "string"
+        },
+        "TrustedAuthorizationContext": {
+          "additionalProperties": false,
+          "properties": {
+            "approval_reference": {
+              "anyOf": [
+                {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Approval Reference"
+            },
+            "approval_source": {
+              "enum": [
+                "TRUSTED_APPLICATION",
+                "USER_SUPPLIED",
+                "NONE"
+              ],
+              "title": "Approval Source",
+              "type": "string"
+            },
+            "approval_valid": {
+              "title": "Approval Valid",
+              "type": "boolean"
+            },
+            "caller_role": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Caller Role",
+              "type": "string"
+            }
+          },
+          "required": [
+            "caller_role",
+            "approval_source",
+            "approval_valid"
+          ],
+          "title": "TrustedAuthorizationContext",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "campaign_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Campaign Id",
+          "type": "string"
+        },
+        "generated_at": {
+          "format": "date-time",
+          "title": "Generated At",
+          "type": "string"
+        },
+        "paths": {
+          "items": {
+            "$ref": "#/$defs/AttackPath"
+          },
+          "title": "Paths",
+          "type": "array"
+        },
+        "review_results": {
+          "items": {
+            "$ref": "#/$defs/PathReviewResult"
+          },
+          "title": "Review Results",
+          "type": "array"
+        },
+        "run_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1",
+          "enum": [
+            "1.0",
+            "1.1"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "campaign_id",
+        "generated_at",
+        "paths",
+        "review_results"
+      ],
+      "title": "EvidenceBundle",
+      "type": "object"
+    },
+    "FollowUpContext": {
+      "$defs": {
+        "DiversityReference": {
+          "additionalProperties": false,
+          "properties": {
+            "prompt": {
+              "maxLength": 20000,
+              "minLength": 1,
+              "title": "Prompt",
+              "type": "string"
+            },
+            "prompt_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Prompt Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "prompt",
+            "prompt_sha256"
+          ],
+          "title": "DiversityReference",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "assessment_spec_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Assessment Spec Sha256",
+          "type": "string"
+        },
+        "critic_review_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Critic Review Id",
+          "type": "string"
+        },
+        "expected_evidence": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Expected Evidence",
+          "type": "array"
+        },
+        "objective": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Objective",
+          "type": "string"
+        },
+        "parent_candidates": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DiversityReference"
+              },
+              "maxItems": 3,
+              "minItems": 1,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Candidates"
+        },
+        "parent_run_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Parent Run Id",
+          "type": "string"
+        },
+        "recommendation_policy": {
+          "anyOf": [
+            {
+              "enum": [
+                "boundary-preserving-v1",
+                "single-turn-continuation-v1"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendation Policy"
+        },
+        "recommended_attack_profile_id": {
+          "enum": [
+            "prompt-injection-v1",
+            "system-override-v1",
+            "prompt-probing-v1",
+            "goal-redirection-v1",
+            "context-poisoning-v1"
+          ],
+          "title": "Recommended Attack Profile Id",
+          "type": "string"
+        },
+        "source_candidate_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Candidate Sha256",
+          "type": "string"
+        },
+        "source_correlation_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Correlation Sha256",
+          "type": "string"
+        },
+        "source_evaluation_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Evaluation Id",
+          "type": "string"
+        },
+        "source_judge_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Judge Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "parent_run_id",
+        "critic_review_id",
+        "source_evaluation_id",
+        "source_candidate_sha256",
+        "source_correlation_sha256",
+        "source_judge_sha256",
+        "assessment_spec_sha256",
+        "recommended_attack_profile_id",
+        "objective",
+        "expected_evidence"
+      ],
+      "title": "FollowUpContext",
+      "type": "object"
+    },
+    "ManualChatMateCriticInput": {
+      "$defs": {
+        "CanonicalJudge": {
+          "additionalProperties": false,
+          "properties": {
+            "category": {
+              "enum": [
+                "ALIGNED",
+                "MINOR_DEVIATION",
+                "CONCERNING_DEVIATION",
+                "MAJOR_DEVIATION",
+                "COMPROMISED"
+              ],
+              "title": "Category",
+              "type": "string"
+            },
+            "confidence": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Confidence",
+              "type": "number"
+            },
+            "deviation_score": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Deviation Score",
+              "type": "integer"
+            },
+            "evaluation_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Evaluation Id",
+              "type": "string"
+            },
+            "evidence_references": {
+              "items": {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 20,
+              "title": "Evidence References",
+              "type": "array"
+            },
+            "invalid_evidence_references": {
+              "items": {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 20,
+              "title": "Invalid Evidence References",
+              "type": "array"
+            },
+            "invalid_policy_references": {
+              "items": {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 20,
+              "title": "Invalid Policy References",
+              "type": "array"
+            },
+            "missing_evidence": {
+              "items": {
+                "maxLength": 2000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 20,
+              "title": "Missing Evidence",
+              "type": "array"
+            },
+            "model_profile_id": {
+              "enum": [
+                "openrouter-nemotron-judge",
+                "openrouter-xing-judge",
+                "openrouter-nemotron-35-super-vl-judge"
+              ],
+              "title": "Model Profile Id",
+              "type": "string"
+            },
+            "policy_references": {
+              "items": {
+                "maxLength": 128,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 20,
+              "title": "Policy References",
+              "type": "array"
+            },
+            "reasoning": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "title": "Reasoning",
+              "type": "string"
+            }
+          },
+          "required": [
+            "evaluation_id",
+            "model_profile_id",
+            "category",
+            "deviation_score",
+            "confidence",
+            "evidence_references",
+            "policy_references",
+            "reasoning",
+            "missing_evidence"
+          ],
+          "title": "CanonicalJudge",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "assessment_spec": {
+          "additionalProperties": true,
+          "title": "Assessment Spec",
+          "type": "object"
+        },
+        "canonical_judge": {
+          "$ref": "#/$defs/CanonicalJudge"
+        },
+        "conversation_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Conversation Id"
+        },
+        "created_at": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Created At",
+          "type": "string"
+        },
+        "critic_data_collection_attested": {
+          "title": "Critic Data Collection Attested",
+          "type": "boolean"
+        },
+        "critic_review_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Critic Review Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "final_status": {
+          "enum": [
+            "RESISTED",
+            "INCONCLUSIVE"
+          ],
+          "title": "Final Status",
+          "type": "string"
+        },
+        "policy_ids": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Policy Ids",
+          "type": "array"
+        },
+        "provenance": {
+          "additionalProperties": true,
+          "title": "Provenance",
+          "type": "object"
+        },
+        "redacted_response": {
+          "maxLength": 20000,
+          "minLength": 1,
+          "title": "Redacted Response",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "selected_candidate_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Selected Candidate Id",
+          "type": "string"
+        },
+        "selected_prompt": {
+          "maxLength": 20000,
+          "minLength": 1,
+          "title": "Selected Prompt",
+          "type": "string"
+        },
+        "source_candidate_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Candidate Sha256",
+          "type": "string"
+        },
+        "source_correlation_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Correlation Sha256",
+          "type": "string"
+        },
+        "source_evaluation_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Source Evaluation Id",
+          "type": "string"
+        },
+        "source_judge_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Judge Sha256",
+          "type": "string"
+        },
+        "source_response_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Source Response Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "critic_review_id",
+        "run_id",
+        "source_evaluation_id",
+        "created_at",
+        "assessment_spec",
+        "selected_candidate_id",
+        "selected_prompt",
+        "source_candidate_sha256",
+        "redacted_response",
+        "source_response_sha256",
+        "source_correlation_sha256",
+        "canonical_judge",
+        "source_judge_sha256",
+        "final_status",
+        "evidence_ids",
+        "policy_ids",
+        "provenance",
+        "critic_data_collection_attested"
+      ],
+      "title": "ManualChatMateCriticInput",
+      "type": "object"
+    },
+    "ManualChatMateCriticOutput": {
+      "additionalProperties": false,
+      "properties": {
+        "attack_effectiveness_analysis": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Attack Effectiveness Analysis",
+          "type": "string"
+        },
+        "evidence_references": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Evidence References",
+          "type": "array"
+        },
+        "expected_evidence": {
+          "items": {
+            "maxLength": 2000,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "minItems": 1,
+          "title": "Expected Evidence",
+          "type": "array"
+        },
+        "management_summary": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Management Summary",
+          "type": "string"
+        },
+        "observed_weak_point": {
+          "anyOf": [
+            {
+              "maxLength": 2000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observed Weak Point"
+        },
+        "outcome_analysis": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Outcome Analysis",
+          "type": "string"
+        },
+        "policy_references": {
+          "items": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Policy References",
+          "type": "array"
+        },
+        "recommended_attack_profile_id": {
+          "enum": [
+            "prompt-injection-v1",
+            "system-override-v1",
+            "prompt-probing-v1",
+            "goal-redirection-v1",
+            "context-poisoning-v1"
+          ],
+          "title": "Recommended Attack Profile Id",
+          "type": "string"
+        },
+        "recommended_follow_up_objective": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Recommended Follow Up Objective",
+          "type": "string"
+        },
+        "weak_point_status": {
+          "enum": [
+            "NONE_OBSERVED",
+            "HYPOTHESIS",
+            "EVIDENCE_SUPPORTED"
+          ],
+          "title": "Weak Point Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attack_effectiveness_analysis",
+        "outcome_analysis",
+        "observed_weak_point",
+        "weak_point_status",
+        "management_summary",
+        "recommended_attack_profile_id",
+        "recommended_follow_up_objective",
+        "expected_evidence",
+        "evidence_references",
+        "policy_references"
+      ],
+      "title": "ManualChatMateCriticOutput",
+      "type": "object"
+    },
+    "ManualChatMateEvaluationInput": {
+      "$defs": {
+        "AssessmentPolicy": {
+          "additionalProperties": false,
+          "properties": {
+            "policy_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Z0-9_:-]+$",
+              "title": "Policy Id",
+              "type": "string"
+            },
+            "statement": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Statement",
+              "type": "string"
+            }
+          },
+          "required": [
+            "policy_id",
+            "statement"
+          ],
+          "title": "AssessmentPolicy",
+          "type": "object"
+        },
+        "AssessmentSpec": {
+          "additionalProperties": false,
+          "properties": {
+            "attack_objective": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Attack Objective",
+              "type": "string"
+            },
+            "compromise_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Compromise Criteria",
+              "type": "array"
+            },
+            "expected_evidence": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Expected Evidence",
+              "type": "array"
+            },
+            "inconclusive_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Inconclusive Criteria",
+              "type": "array"
+            },
+            "policies": {
+              "items": {
+                "$ref": "#/$defs/AssessmentPolicy"
+              },
+              "maxItems": 20,
+              "minItems": 1,
+              "title": "Policies",
+              "type": "array"
+            },
+            "prohibited_outcome": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Prohibited Outcome",
+              "type": "string"
+            },
+            "resistance_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Resistance Criteria",
+              "type": "array"
+            },
+            "spec_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Spec Id",
+              "type": "string"
+            },
+            "spec_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Spec Version",
+              "type": "string"
+            },
+            "target_capabilities": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 20,
+              "minItems": 1,
+              "title": "Target Capabilities",
+              "type": "array"
+            },
+            "target_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Target Profile Id",
+              "type": "string"
+            },
+            "target_purpose": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "title": "Target Purpose",
+              "type": "string"
+            },
+            "vulnerability_category": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Vulnerability Category",
+              "type": "string"
+            },
+            "vulnerability_definition": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "title": "Vulnerability Definition",
+              "type": "string"
+            },
+            "vulnerability_name": {
+              "maxLength": 256,
+              "minLength": 1,
+              "title": "Vulnerability Name",
+              "type": "string"
+            },
+            "vulnerability_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Vulnerability Profile Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "spec_id",
+            "spec_version",
+            "vulnerability_profile_id",
+            "vulnerability_name",
+            "vulnerability_category",
+            "vulnerability_definition",
+            "target_profile_id",
+            "target_purpose",
+            "target_capabilities",
+            "prohibited_outcome",
+            "attack_objective",
+            "compromise_criteria",
+            "resistance_criteria",
+            "inconclusive_criteria",
+            "expected_evidence",
+            "policies"
+          ],
+          "title": "AssessmentSpec",
+          "type": "object"
+        },
+        "ChatMateBaselineMethodReview": {
+          "additionalProperties": false,
+          "properties": {
+            "candidate_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Candidate Id",
+              "type": "string"
+            },
+            "prompt_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Prompt Sha256",
+              "type": "string"
+            },
+            "reviewer_instruction_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Reviewer Instruction Sha256",
+              "type": "string"
+            },
+            "reviewer_instruction_version": {
+              "const": "baseline-method-review-v1",
+              "title": "Reviewer Instruction Version",
+              "type": "string"
+            },
+            "verdict": {
+              "enum": [
+                "ALIGNED",
+                "NOT_ALIGNED",
+                "UNCERTAIN"
+              ],
+              "title": "Verdict",
+              "type": "string"
+            }
+          },
+          "required": [
+            "candidate_id",
+            "prompt_sha256",
+            "verdict",
+            "reviewer_instruction_version",
+            "reviewer_instruction_sha256"
+          ],
+          "title": "ChatMateBaselineMethodReview",
+          "type": "object"
+        },
+        "ChatMateCandidateBatch": {
+          "additionalProperties": false,
+          "properties": {
+            "assessment_spec": {
+              "$ref": "#/$defs/AssessmentSpec"
+            },
+            "attack_method": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Attack Method",
+              "type": "string"
+            },
+            "attack_profile_id": {
+              "enum": [
+                "prompt-injection-v1",
+                "system-override-v1",
+                "prompt-probing-v1",
+                "goal-redirection-v1",
+                "context-poisoning-v1"
+              ],
+              "title": "Attack Profile Id",
+              "type": "string"
+            },
+            "batch_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Batch Id",
+              "type": "string"
+            },
+            "candidates": {
+              "items": {
+                "$ref": "#/$defs/ChatMatePromptCandidate"
+              },
+              "maxItems": 3,
+              "minItems": 2,
+              "title": "Candidates",
+              "type": "array"
+            },
+            "created_at": {
+              "format": "date-time",
+              "title": "Created At",
+              "type": "string"
+            },
+            "follow_up_context": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/FollowUpContext"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "provenance": {
+              "$ref": "#/$defs/ChatMateCandidateProvenance"
+            },
+            "schema_version": {
+              "const": "1.0",
+              "default": "1.0",
+              "title": "Schema Version",
+              "type": "string"
+            },
+            "target_name": {
+              "const": "ChatMate",
+              "default": "ChatMate",
+              "title": "Target Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "batch_id",
+            "created_at",
+            "attack_profile_id",
+            "attack_method",
+            "assessment_spec",
+            "candidates",
+            "provenance"
+          ],
+          "title": "ChatMateCandidateBatch",
+          "type": "object"
+        },
+        "ChatMateCandidateExplanation": {
+          "additionalProperties": false,
+          "properties": {
+            "approach": {
+              "maxLength": 240,
+              "minLength": 1,
+              "title": "Approach",
+              "type": "string"
+            },
+            "intended_effect": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Intended Effect",
+              "type": "string"
+            },
+            "limitations": {
+              "items": {
+                "maxLength": 500,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 3,
+              "minItems": 1,
+              "title": "Limitations",
+              "type": "array"
+            },
+            "selection_reason": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Selection Reason",
+              "type": "string"
+            },
+            "strengths": {
+              "items": {
+                "maxLength": 500,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 3,
+              "minItems": 1,
+              "title": "Strengths",
+              "type": "array"
+            }
+          },
+          "required": [
+            "approach",
+            "intended_effect",
+            "selection_reason",
+            "strengths",
+            "limitations"
+          ],
+          "title": "ChatMateCandidateExplanation",
+          "type": "object"
+        },
+        "ChatMateCandidateProvenance": {
+          "additionalProperties": false,
+          "properties": {
+            "assessment_spec_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Assessment Spec Sha256",
+              "type": "string"
+            },
+            "attacker_model": {
+              "const": "qwen/qwen3.8-27b",
+              "title": "Attacker Model",
+              "type": "string"
+            },
+            "attacker_profile_id": {
+              "const": "groq-qwen-attacker",
+              "title": "Attacker Profile Id",
+              "type": "string"
+            },
+            "attacker_provider": {
+              "const": "GROQ",
+              "title": "Attacker Provider",
+              "type": "string"
+            },
+            "attacker_system_instruction_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Attacker System Instruction Sha256",
+              "type": "string"
+            },
+            "deepeval_version": {
+              "const": "3.6.2",
+              "title": "Deepeval Version",
+              "type": "string"
+            },
+            "deepteam_commit": {
+              "maxLength": 40,
+              "minLength": 40,
+              "title": "Deepteam Commit",
+              "type": "string"
+            },
+            "deepteam_version": {
+              "const": "1.0.9",
+              "title": "Deepteam Version",
+              "type": "string"
+            },
+            "follow_up_context_sha256": {
+              "anyOf": [
+                {
+                  "pattern": "^[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Follow Up Context Sha256"
+            },
+            "generation_guidelines_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Generation Guidelines Sha256",
+              "type": "string"
+            },
+            "source_input_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Source Input Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "deepteam_version",
+            "deepteam_commit",
+            "deepeval_version",
+            "attacker_profile_id",
+            "attacker_provider",
+            "attacker_model",
+            "assessment_spec_sha256",
+            "attacker_system_instruction_sha256",
+            "generation_guidelines_sha256",
+            "source_input_sha256"
+          ],
+          "title": "ChatMateCandidateProvenance",
+          "type": "object"
+        },
+        "ChatMatePromptCandidate": {
+          "additionalProperties": false,
+          "properties": {
+            "attack_method": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Attack Method",
+              "type": "string"
+            },
+            "attack_profile_id": {
+              "enum": [
+                "prompt-injection-v1",
+                "system-override-v1",
+                "prompt-probing-v1",
+                "goal-redirection-v1",
+                "context-poisoning-v1"
+              ],
+              "title": "Attack Profile Id",
+              "type": "string"
+            },
+            "candidate_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Candidate Id",
+              "type": "string"
+            },
+            "explanation": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/ChatMateCandidateExplanation"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "generation_mode": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "BASELINE_DIRECT",
+                    "BASELINE_METHOD_ALIGNED",
+                    "BASELINE_METHOD_REVIEWED"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Generation Mode"
+            },
+            "method_review": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/ChatMateBaselineMethodReview"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "ordinal": {
+              "maximum": 3,
+              "minimum": 1,
+              "title": "Ordinal",
+              "type": "integer"
+            },
+            "prompt": {
+              "maxLength": 20000,
+              "minLength": 1,
+              "title": "Prompt",
+              "type": "string"
+            },
+            "prompt_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Prompt Sha256",
+              "type": "string"
+            },
+            "source_prompt": {
+              "maxLength": 20000,
+              "minLength": 1,
+              "title": "Source Prompt",
+              "type": "string"
+            },
+            "source_prompt_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Source Prompt Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "candidate_id",
+            "ordinal",
+            "attack_profile_id",
+            "attack_method",
+            "source_prompt",
+            "source_prompt_sha256",
+            "prompt",
+            "prompt_sha256"
+          ],
+          "title": "ChatMatePromptCandidate",
+          "type": "object"
+        },
+        "DiversityReference": {
+          "additionalProperties": false,
+          "properties": {
+            "prompt": {
+              "maxLength": 20000,
+              "minLength": 1,
+              "title": "Prompt",
+              "type": "string"
+            },
+            "prompt_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Prompt Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "prompt",
+            "prompt_sha256"
+          ],
+          "title": "DiversityReference",
+          "type": "object"
+        },
+        "FollowUpContext": {
+          "additionalProperties": false,
+          "properties": {
+            "assessment_spec_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Assessment Spec Sha256",
+              "type": "string"
+            },
+            "critic_review_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Critic Review Id",
+              "type": "string"
+            },
+            "expected_evidence": {
+              "items": {
+                "maxLength": 2000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Expected Evidence",
+              "type": "array"
+            },
+            "objective": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "title": "Objective",
+              "type": "string"
+            },
+            "parent_candidates": {
+              "anyOf": [
+                {
+                  "items": {
+                    "$ref": "#/$defs/DiversityReference"
+                  },
+                  "maxItems": 3,
+                  "minItems": 1,
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Parent Candidates"
+            },
+            "parent_run_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Parent Run Id",
+              "type": "string"
+            },
+            "recommendation_policy": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "boundary-preserving-v1",
+                    "single-turn-continuation-v1"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Recommendation Policy"
+            },
+            "recommended_attack_profile_id": {
+              "enum": [
+                "prompt-injection-v1",
+                "system-override-v1",
+                "prompt-probing-v1",
+                "goal-redirection-v1",
+                "context-poisoning-v1"
+              ],
+              "title": "Recommended Attack Profile Id",
+              "type": "string"
+            },
+            "source_candidate_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Source Candidate Sha256",
+              "type": "string"
+            },
+            "source_correlation_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Source Correlation Sha256",
+              "type": "string"
+            },
+            "source_evaluation_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Source Evaluation Id",
+              "type": "string"
+            },
+            "source_judge_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Source Judge Sha256",
+              "type": "string"
+            }
+          },
+          "required": [
+            "parent_run_id",
+            "critic_review_id",
+            "source_evaluation_id",
+            "source_candidate_sha256",
+            "source_correlation_sha256",
+            "source_judge_sha256",
+            "assessment_spec_sha256",
+            "recommended_attack_profile_id",
+            "objective",
+            "expected_evidence"
+          ],
+          "title": "FollowUpContext",
+          "type": "object"
+        },
+        "ManualChatMateEvidence": {
+          "additionalProperties": false,
+          "properties": {
+            "batch_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Batch Id",
+              "type": "string"
+            },
+            "candidate_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Candidate Id",
+              "type": "string"
+            },
+            "candidate_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Candidate Sha256",
+              "type": "string"
+            },
+            "collection_method": {
+              "const": "MANUAL_COPY_PASTE",
+              "default": "MANUAL_COPY_PASTE",
+              "title": "Collection Method",
+              "type": "string"
+            },
+            "correlation_sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Correlation Sha256",
+              "type": "string"
+            },
+            "evidence_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Evidence Id",
+              "type": "string"
+            },
+            "failure_reason": {
+              "anyOf": [
+                {
+                  "const": "RESPONSE_COULD_NOT_BE_COMPLETED",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Failure Reason"
+            },
+            "judge_data_collection_attested": {
+              "title": "Judge Data Collection Attested",
+              "type": "boolean"
+            },
+            "observation_captured_verbatim": {
+              "const": true,
+              "title": "Observation Captured Verbatim",
+              "type": "boolean"
+            },
+            "outcome": {
+              "enum": [
+                "RESPONSE",
+                "VISIBLE_FAILURE"
+              ],
+              "title": "Outcome",
+              "type": "string"
+            },
+            "persisted_response_sha256": {
+              "anyOf": [
+                {
+                  "pattern": "^[a-f0-9]{64}$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Persisted Response Sha256"
+            },
+            "prompt_sent_at": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Prompt Sent At"
+            },
+            "prompt_submitted_unchanged": {
+              "const": true,
+              "title": "Prompt Submitted Unchanged",
+              "type": "boolean"
+            },
+            "redacted_response_text": {
+              "anyOf": [
+                {
+                  "maxLength": 20000,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Redacted Response Text"
+            },
+            "redaction_applied": {
+              "title": "Redaction Applied",
+              "type": "boolean"
+            },
+            "response_observed_at": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Response Observed At"
+            },
+            "run_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Run Id",
+              "type": "string"
+            },
+            "submitted_at": {
+              "format": "date-time",
+              "title": "Submitted At",
+              "type": "string"
+            }
+          },
+          "required": [
+            "evidence_id",
+            "run_id",
+            "batch_id",
+            "candidate_id",
+            "candidate_sha256",
+            "outcome",
+            "correlation_sha256",
+            "submitted_at",
+            "prompt_submitted_unchanged",
+            "observation_captured_verbatim",
+            "redaction_applied",
+            "judge_data_collection_attested"
+          ],
+          "title": "ManualChatMateEvidence",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "candidate_batch": {
+          "$ref": "#/$defs/ChatMateCandidateBatch"
+        },
+        "manual_evidence": {
+          "$ref": "#/$defs/ManualChatMateEvidence"
+        },
+        "max_total_tokens": {
+          "maximum": 250000,
+          "minimum": 10000,
+          "title": "Max Total Tokens",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "selected_candidate_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Selected Candidate Id",
+          "type": "string"
+        },
+        "selected_candidate_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Selected Candidate Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "max_total_tokens",
+        "candidate_batch",
+        "selected_candidate_id",
+        "selected_candidate_sha256",
+        "manual_evidence"
+      ],
+      "title": "ManualChatMateEvaluationInput",
+      "type": "object"
+    },
+    "PathReviewResult": {
+      "$defs": {
+        "AttackCriticReview": {
+          "additionalProperties": false,
+          "properties": {
+            "boundary_pressure": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Boundary Pressure",
+              "type": "integer"
+            },
+            "boundary_relevance": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Boundary Relevance",
+              "type": "integer"
+            },
+            "duplicate_strategy_penalty": {
+              "maximum": 20,
+              "minimum": 0,
+              "title": "Duplicate Strategy Penalty",
+              "type": "integer"
+            },
+            "evidence_quality": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Evidence Quality",
+              "type": "integer"
+            },
+            "execution_efficiency": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Execution Efficiency",
+              "type": "integer"
+            },
+            "expected_evidence": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 5,
+              "minItems": 1,
+              "title": "Expected Evidence",
+              "type": "array"
+            },
+            "failure_analysis": {
+              "minLength": 1,
+              "title": "Failure Analysis",
+              "type": "string"
+            },
+            "model_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Model Profile Id",
+              "type": "string"
+            },
+            "must_not_repeat": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Must Not Repeat",
+              "type": "array"
+            },
+            "recommended_attack_method": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Recommended Attack Method",
+              "type": "string"
+            },
+            "recommended_objective": {
+              "maxLength": 512,
+              "minLength": 1,
+              "title": "Recommended Objective",
+              "type": "string"
+            },
+            "review_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Review Id",
+              "type": "string"
+            },
+            "schema_version": {
+              "default": "1.1",
+              "enum": [
+                "1.0",
+                "1.1"
+              ],
+              "title": "Schema Version",
+              "type": "string"
+            },
+            "strategy_novelty": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Strategy Novelty",
+              "type": "integer"
+            },
+            "target_adaptation": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Target Adaptation",
+              "type": "integer"
+            },
+            "unexplored_boundaries": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Unexplored Boundaries",
+              "type": "array"
+            }
+          },
+          "required": [
+            "review_id",
+            "model_profile_id",
+            "boundary_relevance",
+            "strategy_novelty",
+            "boundary_pressure",
+            "evidence_quality",
+            "target_adaptation",
+            "execution_efficiency",
+            "duplicate_strategy_penalty",
+            "failure_analysis",
+            "unexplored_boundaries",
+            "must_not_repeat",
+            "recommended_attack_method",
+            "recommended_objective",
+            "expected_evidence"
+          ],
+          "title": "AttackCriticReview",
+          "type": "object"
+        },
+        "ReviewDecision": {
+          "enum": [
+            "COMPROMISED",
+            "CONTINUE",
+            "RESISTED",
+            "INCONCLUSIVE",
+            "ERROR"
+          ],
+          "title": "ReviewDecision",
+          "type": "string"
+        },
+        "TargetEvaluation": {
+          "additionalProperties": false,
+          "properties": {
+            "category": {
+              "$ref": "#/$defs/TargetEvaluationCategory"
+            },
+            "confidence": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Confidence",
+              "type": "number"
+            },
+            "deviation_score": {
+              "maximum": 100,
+              "minimum": 0,
+              "title": "Deviation Score",
+              "type": "integer"
+            },
+            "evaluation_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Evaluation Id",
+              "type": "string"
+            },
+            "evidence_references": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Evidence References",
+              "type": "array"
+            },
+            "invalid_evidence_references": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Invalid Evidence References",
+              "type": "array"
+            },
+            "invalid_policy_references": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Invalid Policy References",
+              "type": "array"
+            },
+            "missing_evidence": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Missing Evidence",
+              "type": "array"
+            },
+            "model_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Model Profile Id",
+              "type": "string"
+            },
+            "policy_references": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Policy References",
+              "type": "array"
+            },
+            "reasoning": {
+              "minLength": 1,
+              "title": "Reasoning",
+              "type": "string"
+            },
+            "schema_version": {
+              "default": "1.1",
+              "enum": [
+                "1.0",
+                "1.1"
+              ],
+              "title": "Schema Version",
+              "type": "string"
+            }
+          },
+          "required": [
+            "evaluation_id",
+            "model_profile_id",
+            "category",
+            "deviation_score",
+            "confidence",
+            "evidence_references",
+            "policy_references",
+            "reasoning",
+            "missing_evidence"
+          ],
+          "title": "TargetEvaluation",
+          "type": "object"
+        },
+        "TargetEvaluationCategory": {
+          "enum": [
+            "ALIGNED",
+            "MINOR_DEVIATION",
+            "CONCERNING_DEVIATION",
+            "MAJOR_DEVIATION",
+            "COMPROMISED"
+          ],
+          "title": "TargetEvaluationCategory",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "authoritative_evidence_references": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Authoritative Evidence References",
+          "type": "array"
+        },
+        "critic_review": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AttackCriticReview"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "decision": {
+          "$ref": "#/$defs/ReviewDecision"
+        },
+        "next_attack_method": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Attack Method"
+        },
+        "path_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Path Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1",
+          "enum": [
+            "1.0",
+            "1.1"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "target_evaluation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TargetEvaluation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "path_id",
+        "decision",
+        "authoritative_evidence_references"
+      ],
+      "title": "PathReviewResult",
+      "type": "object"
+    },
+    "RunManifest": {
+      "$defs": {
+        "AssessmentPolicy": {
+          "additionalProperties": false,
+          "properties": {
+            "policy_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Z0-9_:-]+$",
+              "title": "Policy Id",
+              "type": "string"
+            },
+            "statement": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Statement",
+              "type": "string"
+            }
+          },
+          "required": [
+            "policy_id",
+            "statement"
+          ],
+          "title": "AssessmentPolicy",
+          "type": "object"
+        },
+        "AssessmentSpec": {
+          "additionalProperties": false,
+          "properties": {
+            "attack_objective": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Attack Objective",
+              "type": "string"
+            },
+            "compromise_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Compromise Criteria",
+              "type": "array"
+            },
+            "expected_evidence": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Expected Evidence",
+              "type": "array"
+            },
+            "inconclusive_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Inconclusive Criteria",
+              "type": "array"
+            },
+            "policies": {
+              "items": {
+                "$ref": "#/$defs/AssessmentPolicy"
+              },
+              "maxItems": 20,
+              "minItems": 1,
+              "title": "Policies",
+              "type": "array"
+            },
+            "prohibited_outcome": {
+              "maxLength": 1000,
+              "minLength": 1,
+              "title": "Prohibited Outcome",
+              "type": "string"
+            },
+            "resistance_criteria": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 10,
+              "minItems": 1,
+              "title": "Resistance Criteria",
+              "type": "array"
+            },
+            "spec_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Spec Id",
+              "type": "string"
+            },
+            "spec_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Spec Version",
+              "type": "string"
+            },
+            "target_capabilities": {
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 20,
+              "minItems": 1,
+              "title": "Target Capabilities",
+              "type": "array"
+            },
+            "target_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Target Profile Id",
+              "type": "string"
+            },
+            "target_purpose": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "title": "Target Purpose",
+              "type": "string"
+            },
+            "vulnerability_category": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Vulnerability Category",
+              "type": "string"
+            },
+            "vulnerability_definition": {
+              "maxLength": 2000,
+              "minLength": 1,
+              "title": "Vulnerability Definition",
+              "type": "string"
+            },
+            "vulnerability_name": {
+              "maxLength": 256,
+              "minLength": 1,
+              "title": "Vulnerability Name",
+              "type": "string"
+            },
+            "vulnerability_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "title": "Vulnerability Profile Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "spec_id",
+            "spec_version",
+            "vulnerability_profile_id",
+            "vulnerability_name",
+            "vulnerability_category",
+            "vulnerability_definition",
+            "target_profile_id",
+            "target_purpose",
+            "target_capabilities",
+            "prohibited_outcome",
+            "attack_objective",
+            "compromise_criteria",
+            "resistance_criteria",
+            "inconclusive_criteria",
+            "expected_evidence",
+            "policies"
+          ],
+          "title": "AssessmentSpec",
+          "type": "object"
+        },
+        "Campaign": {
+          "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "model_profiles": {
+                    "contains": {
+                      "properties": {
+                        "provider": {
+                          "const": "LOCAL"
+                        }
+                      },
+                      "required": [
+                        "provider"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "model_profiles"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "schema_version": {
+                    "const": "1.1"
+                  }
+                }
+              }
+            }
+          ],
+          "properties": {
+            "allowed_attack_methods": {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "title": "Allowed Attack Methods",
+              "type": "array"
+            },
+            "assessment_spec": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/AssessmentSpec"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null
+            },
+            "budget": {
+              "$ref": "#/$defs/CampaignBudget"
+            },
+            "campaign_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Campaign Id",
+              "type": "string"
+            },
+            "campaign_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Campaign Version",
+              "type": "string"
+            },
+            "created_at": {
+              "format": "date-time",
+              "title": "Created At",
+              "type": "string"
+            },
+            "evidence_policy": {
+              "$ref": "#/$defs/EvidencePolicy"
+            },
+            "expected_boundary": {
+              "minLength": 1,
+              "title": "Expected Boundary",
+              "type": "string"
+            },
+            "model_profiles": {
+              "items": {
+                "$ref": "#/$defs/ModelProfileSnapshot"
+              },
+              "minItems": 4,
+              "title": "Model Profiles",
+              "type": "array"
+            },
+            "scenario_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Scenario Id",
+              "type": "string"
+            },
+            "scenario_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Scenario Version",
+              "type": "string"
+            },
+            "schema_version": {
+              "default": "1.1",
+              "enum": [
+                "1.0",
+                "1.1"
+              ],
+              "title": "Schema Version",
+              "type": "string"
+            },
+            "target_profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Target Profile Id",
+              "type": "string"
+            },
+            "target_profile_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Target Profile Version",
+              "type": "string"
+            },
+            "target_purpose": {
+              "minLength": 1,
+              "title": "Target Purpose",
+              "type": "string"
+            },
+            "vulnerability_types": {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "title": "Vulnerability Types",
+              "type": "array"
+            }
+          },
+          "required": [
+            "campaign_id",
+            "campaign_version",
+            "created_at",
+            "scenario_id",
+            "scenario_version",
+            "target_profile_id",
+            "target_profile_version",
+            "target_purpose",
+            "expected_boundary",
+            "vulnerability_types",
+            "allowed_attack_methods",
+            "model_profiles",
+            "budget"
+          ],
+          "title": "Campaign",
+          "type": "object"
+        },
+        "CampaignBudget": {
+          "additionalProperties": false,
+          "properties": {
+            "max_concurrent_provider_calls": {
+              "default": 1,
+              "maximum": 20,
+              "minimum": 1,
+              "title": "Max Concurrent Provider Calls",
+              "type": "integer"
+            },
+            "max_paths": {
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Max Paths",
+              "type": "integer"
+            },
+            "max_provider_calls": {
+              "minimum": 1,
+              "title": "Max Provider Calls",
+              "type": "integer"
+            },
+            "max_retries_per_call": {
+              "maximum": 5,
+              "minimum": 0,
+              "title": "Max Retries Per Call",
+              "type": "integer"
+            },
+            "max_total_tokens": {
+              "minimum": 1,
+              "title": "Max Total Tokens",
+              "type": "integer"
+            },
+            "max_turns_per_path": {
+              "maximum": 5,
+              "minimum": 1,
+              "title": "Max Turns Per Path",
+              "type": "integer"
+            },
+            "timeout_seconds": {
+              "minimum": 1,
+              "title": "Timeout Seconds",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "max_paths",
+            "max_turns_per_path",
+            "max_provider_calls",
+            "max_total_tokens",
+            "timeout_seconds",
+            "max_retries_per_call"
+          ],
+          "title": "CampaignBudget",
+          "type": "object"
+        },
+        "EvidencePolicy": {
+          "additionalProperties": false,
+          "properties": {
+            "allow_external_upload": {
+              "const": false,
+              "default": false,
+              "title": "Allow External Upload",
+              "type": "boolean"
+            },
+            "persist_provider_credentials": {
+              "const": false,
+              "default": false,
+              "title": "Persist Provider Credentials",
+              "type": "boolean"
+            },
+            "persist_target_credentials": {
+              "const": false,
+              "default": false,
+              "title": "Persist Target Credentials",
+              "type": "boolean"
+            },
+            "synthetic_only": {
+              "const": true,
+              "default": true,
+              "title": "Synthetic Only",
+              "type": "boolean"
+            }
+          },
+          "title": "EvidencePolicy",
+          "type": "object"
+        },
+        "ModelProfileSnapshot": {
+          "additionalProperties": false,
+          "properties": {
+            "model": {
+              "maxLength": 256,
+              "minLength": 1,
+              "title": "Model",
+              "type": "string"
+            },
+            "profile_id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "title": "Profile Id",
+              "type": "string"
+            },
+            "profile_version": {
+              "maxLength": 64,
+              "minLength": 1,
+              "title": "Profile Version",
+              "type": "string"
+            },
+            "provider": {
+              "$ref": "#/$defs/ProviderName"
+            },
+            "role": {
+              "$ref": "#/$defs/ModelRole"
+            },
+            "temperature": {
+              "maximum": 2,
+              "minimum": 0,
+              "title": "Temperature",
+              "type": "number"
+            }
+          },
+          "required": [
+            "profile_id",
+            "profile_version",
+            "role",
+            "provider",
+            "model",
+            "temperature"
+          ],
+          "title": "ModelProfileSnapshot",
+          "type": "object"
+        },
+        "ModelRole": {
+          "enum": [
+            "ATTACKER",
+            "DEEPTEAM_EVALUATOR",
+            "TARGET",
+            "TARGET_EVALUATOR",
+            "ATTACK_CRITIC"
+          ],
+          "title": "ModelRole",
+          "type": "string"
+        },
+        "ProviderName": {
+          "enum": [
+            "GROQ",
+            "OPENROUTER",
+            "LOCAL"
+          ],
+          "title": "ProviderName",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "campaign": {
+          "$ref": "#/$defs/Campaign"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "deepeval_version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Deepeval Version",
+          "type": "string"
+        },
+        "deepteam_commit": {
+          "maxLength": 40,
+          "minLength": 40,
+          "title": "Deepteam Commit",
+          "type": "string"
+        },
+        "deepteam_version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Deepteam Version",
+          "type": "string"
+        },
+        "evidence_bundle_reference": {
+          "maxLength": 512,
+          "minLength": 1,
+          "title": "Evidence Bundle Reference",
+          "type": "string"
+        },
+        "prompt_provenance_hashes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Prompt Provenance Hashes",
+          "type": "object"
+        },
+        "python_version": {
+          "maxLength": 64,
+          "minLength": 1,
+          "title": "Python Version",
+          "type": "string"
+        },
+        "run_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1",
+          "enum": [
+            "1.0",
+            "1.1"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "telemetry_disabled": {
+          "const": true,
+          "default": true,
+          "title": "Telemetry Disabled",
+          "type": "boolean"
+        },
+        "upload_to_confident": {
+          "const": false,
+          "default": false,
+          "title": "Upload To Confident",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "run_id",
+        "created_at",
+        "python_version",
+        "deepteam_version",
+        "deepteam_commit",
+        "deepeval_version",
+        "campaign",
+        "evidence_bundle_reference"
+      ],
+      "title": "RunManifest",
+      "type": "object"
+    },
+    "TargetEvaluation": {
+      "$defs": {
+        "TargetEvaluationCategory": {
+          "enum": [
+            "ALIGNED",
+            "MINOR_DEVIATION",
+            "CONCERNING_DEVIATION",
+            "MAJOR_DEVIATION",
+            "COMPROMISED"
+          ],
+          "title": "TargetEvaluationCategory",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/TargetEvaluationCategory"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "deviation_score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Deviation Score",
+          "type": "integer"
+        },
+        "evaluation_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Evaluation Id",
+          "type": "string"
+        },
+        "evidence_references": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence References",
+          "type": "array"
+        },
+        "invalid_evidence_references": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Invalid Evidence References",
+          "type": "array"
+        },
+        "invalid_policy_references": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Invalid Policy References",
+          "type": "array"
+        },
+        "missing_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Evidence",
+          "type": "array"
+        },
+        "model_profile_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Model Profile Id",
+          "type": "string"
+        },
+        "policy_references": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Policy References",
+          "type": "array"
+        },
+        "reasoning": {
+          "minLength": 1,
+          "title": "Reasoning",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.1",
+          "enum": [
+            "1.0",
+            "1.1"
+          ],
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "evaluation_id",
+        "model_profile_id",
+        "category",
+        "deviation_score",
+        "confidence",
+        "evidence_references",
+        "policy_references",
+        "reasoning",
+        "missing_evidence"
+      ],
+      "title": "TargetEvaluation",
+      "type": "object"
+    }
+  },
+  "title": "SecMate DeepTeam Worker Contracts",
+  "version": "1.1"
+}

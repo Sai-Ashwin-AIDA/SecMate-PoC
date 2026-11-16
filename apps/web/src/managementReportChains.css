@@ -1,0 +1,11 @@
+.management-report-chain { margin: 1.5rem 0; padding: 1.1rem; border: 1px solid #cbd5e1; border-radius: 8px; overflow-wrap: anywhere; }
+.management-report-stage { padding: 1rem 0; border-top: 1px solid #e2e8f0; }
+.management-report-critic { margin: 1rem 0; padding: 1rem; border-left: 4px solid #6366f1; background: #f8fafc; color: #172033; }
+.management-report-critic h5 { margin: 1rem 0 .3rem; font-size: .85rem; }
+.management-report-critic p { white-space: pre-wrap; }
+.management-report-critic dd { overflow-wrap: anywhere; }
+@media print {
+  .management-report-chain { break-inside: auto; }
+  .management-report-stage > h4, .management-report-critic > h4, .management-report-critic h5 { break-after: avoid; }
+  .management-report-critic p { orphans: 3; widows: 3; }
+}
