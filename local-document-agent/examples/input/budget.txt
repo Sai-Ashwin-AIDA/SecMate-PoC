@@ -1,0 +1,5 @@
+Harbor budget — fictional sample
+Planning envelope: USD 1000.
+Committed spending: USD 650.
+Remaining uncommitted funds: USD 350.
+Any additional spending requires approval.

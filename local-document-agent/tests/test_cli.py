@@ -1,5 +1,4 @@
 import asyncio
-import json
 import subprocess
 from pathlib import Path
 
@@ -119,6 +118,20 @@ def test_terminal_control_characters_are_escaped():
     assert safe_terminal("a\u202eb") == r"a\u202eb"
 
 
+def test_cli_continues_after_cancelled_turn(roots):
+    class CancelModel(CLIMockModel):
+        async def ainvoke(self, messages, **kwargs):
+            raise asyncio.CancelledError
+    core = DocumentAssistant(
+        Configuration(input_dir=roots.input, output_dir=roots.output), CancelModel([]), roots=roots,
+    )
+    commands = iter(["Do a task.", "/new", "/exit"])
+    output = []
+    assert asyncio.run(run_cli(core, read=lambda _: next(commands), write=output.append)) == 0
+    assert any("[CANCELLED]" in line for line in output)
+    assert any("New conversation" in line for line in output)
+
+
 def test_installed_console_and_module_help_are_real_without_credentials():
     import sys
     import os
@@ -130,3 +143,15 @@ def test_installed_console_and_module_help_are_real_without_credentials():
         result = subprocess.run(command, capture_output=True, text=True, env=dict(os.environ), timeout=60)
         assert result.returncode == 0
         assert "--app-root" in result.stdout
+
+
+def test_live_sample_runner_requires_explicit_flag_before_configuration():
+    import sys
+    root = Path(__file__).resolve().parents[1]
+    result = subprocess.run(
+        [sys.executable, str(root / "examples" / "live_smoke.py")],
+        capture_output=True, text=True, timeout=60,
+    )
+    assert result.returncode == 2
+    assert "Pass --run-live" in result.stderr
+    assert "Configuration not ready" not in result.stdout

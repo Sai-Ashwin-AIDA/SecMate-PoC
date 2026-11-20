@@ -43,7 +43,7 @@ class Configuration(StrictModel):
         return self
 
     def require_inference_ready(self) -> None:
-        """Future Slice 2 gate; never constructs a provider client."""
+        """Validate explicit inference readiness; never constructs a provider client."""
         if not self.api_key.get_secret_value().strip():
             raise ConfigurationError("OPENROUTER_API_KEY is required for inference.")
         if not self.allow_transmission:

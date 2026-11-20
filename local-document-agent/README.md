@@ -1,15 +1,19 @@
-# Local Document Agent — Slice 1
+# Local Document Agent — CLI and local tools
 
-An independent Python package with **three real offline LangChain tools**. Slice 1
-is implemented and tested; it is not yet a chat assistant.
+An independent Python package with **three real LangChain tools**, a bounded
+message/tool controller, and a working terminal interface. Tools, agent wiring,
+SDK transport, and CLI behavior are verified offline with explicit mocks.
 
-There is **no model construction, agent loop, interactive CLI, console entry point,
-HTTP adapter, or email sending**. Do not try `local-document-agent` or
-`python -m local_document_agent`: those entry points belong to Slice 2.
+**Live Nemotron behavior remains unverified until private key setup and the live
+demonstrations are complete.** See `BUILD_STATUS.md` for actual outcomes. Normal
+CLI use requires your OpenRouter key and explicit transmission consent.
+There is no fake-success CLI mode, HTTP adapter, email sending, alternate model,
+paid fallback, or SecMate integration.
 
 Design authority: the blueprint on GitHub branch **Sai**, including Section 0.
-The local `Documents/LOCAL_DOCUMENT_AGENT_BLUEPRINT.md` was older during this build
-and was not replaced. See `BUILD_STATUS.md` for the exact revision and test results.
+The local blueprint was initially older; concurrent repository updates have now
+brought in Section 0. This agent did not overwrite or pull parent documentation.
+See `BUILD_STATUS.md` for the exact authority and observed results.
 
 ## Setup — Windows PowerShell
 
@@ -70,11 +74,60 @@ during collection, removes inherited provider/tracing credentials in its process
 and disables LangSmith tracing. No key, consent setting, `.env`, personal files,
 provider client, or model fake is needed.
 
-Latest result: **81 passed, 1 skipped**. The skip is the actual symlink fixture:
+Latest pre-live gate: **142 passed, 1 skipped**. The suite includes the independent
+audit fixes, mocked agent/CLI tasks, and real SDK calls over `httpx.MockTransport`.
+No inference takes place in tests. The skip is the actual symlink fixture:
 this Windows process lacks creation privileges/Developer Mode. Actual junction,
 opened-handle boundary, hard-link, and exclusive-write checks passed.
 
-## Direct local use — no inference
+## Normal CLI setup and startup
+
+Only app-local `.env` is loaded. Never copy SecMate credentials or use its venv.
+Create dedicated document roots, preserving existing configuration:
+
+```powershell
+New-Item -ItemType Directory -Force ".\data\input"
+New-Item -ItemType Directory -Force ".\data\output"
+if (-not (Test-Path -LiteralPath ".env")) {
+    Copy-Item -LiteralPath ".env.example" -Destination ".env"
+}
+notepad ".\.env"
+```
+
+Set `ALLOW_OPENROUTER_DOCUMENT_TRANSMISSION=true` only after reviewing the
+disclosure below. Supply `OPENROUTER_API_KEY` privately in that file or only in the
+current process, without putting the key in a command:
+
+```powershell
+$secret = Read-Host "OpenRouter API key" -AsSecureString
+$env:OPENROUTER_API_KEY = [System.Net.NetworkCredential]::new("", $secret).Password
+Remove-Variable secret
+```
+
+Leave the exact model/base URL and tracing disabled. Then run:
+
+```powershell
+$env:UV_NO_ENV_FILE = "1"
+.\.tools\bin\uv.exe run --frozen --no-sync local-document-agent
+# Equivalent:
+.\.tools\bin\uv.exe run --frozen --no-sync python -m local_document_agent
+```
+
+`--help` works without a key. `--app-root PATH` selects an explicit application
+configuration directory. Default configuration is anchored to this editable source
+installation, not the caller's current directory; use `--app-root` if installing
+the wheel elsewhere.
+
+Commands: `/help`, `/new`, `/exit`. EOF exits. Ctrl+C cancels active inference;
+already-written files remain and are still reported. Ctrl+C at the input prompt
+or a second Ctrl+C exits. Observed tool activity, actual read references, and
+created paths are shown. No successful read/write is inferred from model prose.
+
+Missing key/consent/root errors stop startup. Provider rate limits, capacity,
+timeouts, malformed responses, file failures and argument errors are reported
+without automatic retry, argument repair, or fallback.
+
+## Direct local tools — no inference
 
 The supported programming boundary is:
 
@@ -160,12 +213,20 @@ Paths and filenames are validated without rewriting them. A write collision neve
 overwrites the existing file, even when another creator wins the exclusive-open
 race after the preflight check.
 
-The source ledger stores metadata, not complete documents. Each `ToolContext` is
-an explicit active-operation context, capped at 32 read references and 32 created
-records. It also retains the returned read pages for observed-operation reporting.
-Source IDs increase monotonically; discarding a reference makes it invalid for
-future reports. Slice 2 owns conversation/history lifecycle and context pruning.
-Use contexts sequentially; concurrent mutation is not supported.
+The source ledger stores metadata, not complete documents. A standalone
+`ToolContext` defaults to 32 read references and caps successful creates at 32.
+The controller uses fresh per-turn event contexts and a bounded shared metadata
+ledger sized for retained turns (maximum 180 references). Source IDs increase
+monotonically within a session. Whole-turn eviction removes owned IDs; failed
+turns drop newly introduced references, not successful files. Returned pages live
+only in bounded turn/message history, not an accumulating event log.
+Use contexts sequentially; concurrent turns are rejected.
+
+The independently callable core is `DocumentAssistant(configuration, model,
+roots=...)`, `await assistant.chat(text)`, and `assistant.new_session()`.
+The model is explicitly injected; the normal CLI constructs the real configured
+provider. `TurnResult` exposes observed reads, earlier observed sources referenced,
+successful files, uncertain outputs, activity and safe errors.
 
 ## Configuration boundaries
 
@@ -174,18 +235,58 @@ that root's `.env`, with interpolation disabled and process settings taking
 precedence. It never searches parents or mutates the process environment.
 Pass `environment={}` for explicit isolated configuration in tests.
 
-Offline operations require only valid local roots. The reserved
-`Configuration.require_inference_ready()` gate rejects missing keys and false
-transmission consent; it does not construct a model. Slice 2 must apply that gate,
-root validation, and tracing restrictions at real assistant startup.
+Offline operations require only valid local roots.
+`Configuration.require_inference_ready()` rejects missing keys and false consent.
+The real CLI applies that gate, root validation, and tracing restrictions before
+provider construction. Tool imports still require no client, key, or consent.
 
 `.env.example` contains no secrets. Do not copy a parent `.env` or reuse its venv.
 Do not enable tracing or add raw tool callbacks that log document contents.
 
-Slice 1 transmits **no documents for inference**. In Slice 2/3, selected chat,
-document excerpts, search snippets, and generated text will be sent to OpenRouter
-and its serving provider. Provider privacy/retention policies still require review;
-local storage does not make future inference private or offline.
+**Normal CLI use sends chat, selected document excerpts, search snippets, and
+generated text to OpenRouter and its serving provider.** Review their retention/
+training policies; local storage does not make inference private or offline.
+Keep account-level broadcast/observability destinations disabled. SDK payload
+logging is explicitly disabled even when `OPENROUTER_DEBUG` is inherited. No trace
+metadata is sent and LangSmith tracing is disabled around model/tool execution.
+
+## Conversation controls
+
+Defaults: four previous complete turns, eight model calls and twelve tool calls
+per turn, 2048 output tokens/call, 30-second request timeout, 120-second turn
+deadline. Context and cumulative token budgets are configurable within fixed
+bounds. Context uses conservative serialized-byte units plus per-message overhead,
+not an exact Nemotron tokenizer.
+
+Old whole turns are pruned without orphaning call/result pairs. An over-budget
+active turn stops rather than silently losing its tool results. Failed, limited
+or cancelled turns are not retained; successful files and possible partial
+outputs are still reported. `/new` clears conversation/source memory and changes
+the session ID, not local files. No autonomous or durable memory exists.
+
+## Safe error diagnostics
+
+At the user's request, normal CLI errors are recorded in **`.logs/errors.log`**
+inside the application. Rotation retains a 1 MiB current file and at most three
+backups. `.logs/`, `.env`, data, environments, and caches are ignored by Git.
+
+Records contain UTC timestamps, app/Python versions, phase, stable error code,
+session ID, known tool name, exception class and up to eight code-location frames.
+They never include prompts, document/snippet/draft bodies, keys, raw provider
+responses, exception prose, source lines, or local-variable dumps. Document
+filenames are not logged; the terminal shows needed paths locally.
+
+To inspect recent diagnostics:
+
+```powershell
+Get-Content ".\.logs\errors.log" -Tail 20
+```
+
+Startup, tool, provider, budget, cancellation and shutdown errors have distinct
+codes. For debugging, share a sanitized record's code/session/timestamp and code
+frames—not your `.env` or personal documents. If logging storage becomes
+unavailable, the CLI warns that the error may not have been saved; disk/permission
+failures cannot guarantee durable logging.
 
 ## Limits and limitations
 
@@ -217,5 +318,30 @@ local storage does not make future inference private or offline.
 - Source references establish what was read, not factual accuracy of supplied
   report prose. No model behavior or complete assistant usability is verified.
 
-Stop here for Slice 1. See `BUILD_STATUS.md` before beginning a separately assigned
-Slice 2.
+See `BUILD_STATUS.md` for the completed offline gates and the live-test gate.
+No live success, provider availability, or immunity to future errors is claimed
+without an actual observed demonstration.
+
+## Explicit live sample demonstrations
+
+`examples/input/` contains only fictional launch notes, a budget and a plain-text
+email. After private app-local `.env` setup and consent, the explicitly guarded
+demonstration command is:
+
+```powershell
+.\.tools\bin\uv.exe run --frozen --no-sync python examples/live_smoke.py --run-live
+```
+
+It uses the real model and tools, ordinary task prompts, and the CLI result
+renderer. It does not force tools, fabricate responses, retry, or fall back.
+Only fictional copies in a new `.cache/live-demo-<id>/input` are available to the
+model's tools; no configured personal document directory is read. Each of the
+three tasks starts a fresh conversation. Configured call/token/deadline limits
+apply. A failed turn stops the remaining tasks instead of retrying until success.
+
+Actual reports/drafts remain in that run's `output/`. `outcomes.json` records only
+statuses, observed source/output names and error codes, not response prose or
+credentials. Exit 0 means the observed workflow checks passed, not independent
+semantic certification of the model's answer. Exit 1 indicates an unsuccessful
+workflow; exit 2 indicates private configuration/consent is not ready. This sample
+runner reads only the app-local `.env`, deliberately ignoring ambient provider keys.

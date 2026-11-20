@@ -17,6 +17,7 @@ from langsmith import tracing_context
 from .config import Configuration, reject_tracing
 from .context import Source, SourceLedger, ToolContext
 from .contracts import CreateData, DocumentError, ToolResult
+from .diagnostics import DiagnosticLog
 from .filesystem import FilesystemRoots
 from .prompts import SYSTEM_PROMPT
 from .provider import ProviderFailure, provider_failure
@@ -81,11 +82,13 @@ class DocumentAssistant:
         self, configuration: Configuration, model: Any, *,
         roots: FilesystemRoots | None = None,
         observer: Callable[[ToolActivity], None] | None = None,
+        diagnostics: DiagnosticLog | None = None,
     ) -> None:
         self.configuration = configuration
         self.roots = roots or FilesystemRoots(configuration.input_dir, configuration.output_dir)
         self.model = model
         self.observer = observer
+        self.diagnostics = diagnostics
         self._active = False
         self._history: list[CompletedTurn] = []
         self.new_session()
@@ -118,11 +121,15 @@ class DocumentAssistant:
 
     async def chat(self, message: str) -> TurnResult:
         if self._active:
+            if self.diagnostics:
+                self.diagnostics.record("turn", "BUSY", session_id=self.session_id)
             return TurnResult(
                 self.session_id, "failed",
                 error=ProviderFailure("BUSY", "This conversation already has an active turn."),
             )
         if not isinstance(message, str) or not message.strip() or len(message) > 4000:
+            if self.diagnostics:
+                self.diagnostics.record("turn", "INVALID_INPUT", session_id=self.session_id)
             return TurnResult(
                 self.session_id, "failed",
                 error=ProviderFailure("INVALID_INPUT", "Enter 1–4000 characters of nonblank text."),
@@ -131,6 +138,8 @@ class DocumentAssistant:
             message.encode("utf-8", errors="strict")
             reject_tracing(os.environ)
         except (ValueError, UnicodeError):
+            if self.diagnostics:
+                self.diagnostics.record("turn", "CONFIGURATION_ERROR", session_id=self.session_id)
             return TurnResult(
                 self.session_id, "failed",
                 error=ProviderFailure("CONFIGURATION_ERROR", "Valid UTF-8 input and disabled tracing are required."),
@@ -146,25 +155,32 @@ class DocumentAssistant:
         answer = ""
         status = "completed"
         error = None
+        diagnostic_exception = None
         try:
             with tracing_context(enabled=False):
                 async with asyncio.timeout(self.configuration.turn_timeout_seconds):
                     answer = await self._loop(context, active, events, available_sources)
         except StopTurn as stopped:
             status, error = stopped.status, stopped.failure
-        except asyncio.CancelledError:
+        except asyncio.CancelledError as stopped:
             status = "cancelled"
+            diagnostic_exception = stopped
             error = ProviderFailure("CANCELLED", "Turn cancelled; the incomplete conversation was not retained.")
-        except TimeoutError:
+        except TimeoutError as stopped:
             status = "limited"
+            diagnostic_exception = stopped
             error = ProviderFailure("TURN_TIMEOUT", "The turn deadline expired; the incomplete conversation was not retained.")
         except DocumentError as stopped:
             status = "limited"
+            diagnostic_exception = stopped
             error = ProviderFailure(stopped.error.code, stopped.error.message)
         except Exception as stopped:
             status, error = "failed", provider_failure(stopped)
+            diagnostic_exception = stopped
         finally:
             self._active = False
+        if error is not None and self.diagnostics:
+            self.diagnostics.record("turn", error.code, session_id=self.session_id, exception=diagnostic_exception)
         introduced = tuple(source for source in self.ledger.snapshot() if source.source_id not in before)
         if status == "completed":
             self._history.append(CompletedTurn(tuple(active), tuple(source.source_id for source in introduced)))
@@ -205,6 +221,7 @@ class DocumentAssistant:
             reservation = estimate_units(messages, schemas) + self.configuration.max_output_tokens
             if charged + reservation > self.configuration.max_turn_token_budget:
                 raise StopTurn("TOKEN_LIMIT", "The turn token budget is exhausted; narrow the task.")
+            context.check_deadline()
             remaining = max(1, int((context.deadline - time.monotonic()) * 1000))
             timeout_ms = min(self.configuration.request_timeout_seconds * 1000, remaining)
             try:
@@ -269,13 +286,20 @@ class DocumentAssistant:
                 active.append(result)
                 if result.status == "error":
                     failed_calls.add(signature)
+                    if self.diagnostics:
+                        self.diagnostics.record("tool", summary, session_id=self.session_id, tool=name)
                 activity = ToolActivity(name, result.status, summary)
                 events.append(activity)
                 if self.observer is not None:
                     try:
                         self.observer(activity)
-                    except Exception:
+                    except Exception as observer_error:
                         # Presentation failure cannot retry or undo a completed write.
+                        if self.diagnostics:
+                            self.diagnostics.record(
+                                "cli", "ACTIVITY_RENDER_ERROR", session_id=self.session_id,
+                                exception=observer_error,
+                            )
                         self.observer = None
         raise StopTurn("MODEL_LIMIT", "The turn model-call budget is exhausted; no additional request was made.")
 

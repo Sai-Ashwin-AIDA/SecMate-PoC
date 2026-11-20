@@ -10,6 +10,7 @@ from typing import Callable
 from .agent import DocumentAssistant, ToolActivity, TurnResult
 from .config import ConfigurationError, load_configuration
 from .contracts import DocumentError
+from .diagnostics import DiagnosticLog, DiagnosticStartupError
 from .filesystem import FilesystemRoots
 from .prompts import TRANSMISSION_NOTICE
 from .provider import create_provider
@@ -67,7 +68,11 @@ async def run_cli(
     while True:
         try:
             message = read("you> ")
-        except (EOFError, KeyboardInterrupt):
+        except EOFError:
+            return 0
+        except KeyboardInterrupt:
+            if assistant.diagnostics:
+                assistant.diagnostics.record("cli", "INTERRUPTED", session_id=assistant.session_id)
             return 0
         if message == "/exit":
             return 0
@@ -77,21 +82,35 @@ async def run_cli(
         elif message == "/help":
             write("Chat to search/read documents and create reports or unsent drafts. /new resets; /exit exits.")
         elif message.startswith("/"):
+            if assistant.diagnostics:
+                assistant.diagnostics.record("cli", "UNKNOWN_COMMAND", session_id=assistant.session_id)
             write("Unknown command. Use /help.")
         else:
             result = await assistant.chat(message)
             render_result(result, assistant.roots, write)
+            if result.unverified_source_ids and assistant.diagnostics:
+                assistant.diagnostics.record(
+                    "turn", "UNVERIFIED_SOURCE_REFERENCE", session_id=assistant.session_id,
+                )
+            if assistant.diagnostics and assistant.diagnostics.failed:
+                write("Warning: diagnostic logging is unavailable; the error above may not be saved.")
 
 
-async def _start(app_root: Path) -> int:
+async def _start(app_root: Path, diagnostics: DiagnosticLog) -> int:
     configuration = load_configuration(app_root)
     configuration.require_inference_ready()
     roots = FilesystemRoots(configuration.input_dir, configuration.output_dir)
     provider = create_provider(configuration)
     try:
-        return await run_cli(DocumentAssistant(configuration, provider.model, roots=roots))
+        return await run_cli(DocumentAssistant(
+            configuration, provider.model, roots=roots, diagnostics=diagnostics,
+        ))
     finally:
-        await provider.aclose()
+        try:
+            await provider.aclose()
+        except Exception as error:
+            diagnostics.record("shutdown", "PROVIDER_CLOSE_ERROR", exception=error)
+            raise
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -101,16 +120,33 @@ def main(argv: list[str] | None = None) -> int:
         help="Application directory containing the explicit .env (defaults to this source installation).",
     )
     arguments = parser.parse_args(argv)
+    diagnostics = None
     try:
-        return asyncio.run(_start(arguments.app_root))
-    except (ConfigurationError, DocumentError) as error:
+        diagnostics = DiagnosticLog(arguments.app_root)
+        return asyncio.run(_start(arguments.app_root, diagnostics))
+    except DiagnosticStartupError as error:
         print(f"Startup error: {error}", file=sys.stderr)
         return 2
-    except OSError:
+    except (ConfigurationError, DocumentError) as error:
+        if diagnostics:
+            code = error.error.code if isinstance(error, DocumentError) else "CONFIGURATION_ERROR"
+            diagnostics.record("startup", code, exception=error)
+        print(f"Startup error: {error}", file=sys.stderr)
+        return 2
+    except OSError as error:
+        if diagnostics:
+            diagnostics.record("startup", "IO_ERROR", exception=error)
         print("Startup error: application configuration or local roots are unavailable.", file=sys.stderr)
         return 2
     except KeyboardInterrupt:
+        if diagnostics:
+            diagnostics.record("cli", "INTERRUPTED")
         return 0
-    except Exception:
+    except Exception as error:
+        if diagnostics:
+            diagnostics.record("cli", "CLI_ERROR", exception=error)
         print("Startup error: initialization or shutdown failed; no automatic fallback was attempted.", file=sys.stderr)
         return 2
+    finally:
+        if diagnostics:
+            diagnostics.close()

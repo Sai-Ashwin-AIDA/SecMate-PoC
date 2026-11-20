@@ -9,5 +9,6 @@ data/
 __pycache__/
 .pytest_cache/
 *.log
+.logs/
 dist/
 *.egg-info/

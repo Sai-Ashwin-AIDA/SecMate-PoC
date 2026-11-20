@@ -272,3 +272,33 @@ def test_request_deadline_and_cancellation(roots):
         assert cancelled.status == "cancelled" and not core._history
         core.new_session()
     asyncio.run(scenario())
+
+
+def test_outer_turn_deadline_and_cancel_after_successful_write(roots, monkeypatch):
+    original_timeout = asyncio.timeout
+    # Accelerate only the test's outer timer, without weakening Configuration.
+    monkeypatch.setattr(
+        asyncio, "timeout",
+        lambda seconds: original_timeout(0.02 if seconds == 15 else seconds),
+    )
+    async def waiting():
+        await asyncio.sleep(60)
+    core = assistant(roots, ScriptedModel(waiting), request_timeout_seconds=5, turn_timeout_seconds=15)
+    result = asyncio.run(core.chat("Hello."))
+    assert result.error.code == "TURN_TIMEOUT" and not core._history
+    monkeypatch.setattr(asyncio, "timeout", original_timeout)
+
+    async def scenario():
+        ready = asyncio.Event()
+        async def pause_after_write():
+            ready.set()
+            await asyncio.Event().wait()
+        core = assistant(roots, ScriptedModel(writer(source_ids=[]), pause_after_write))
+        task = asyncio.create_task(core.chat("Save a report."))
+        await ready.wait()
+        task.cancel()
+        cancelled = await task
+        assert cancelled.status == "cancelled"
+        assert cancelled.created_files[0].path == "report.md"
+        assert (roots.output / "report.md").exists() and not core._history
+    asyncio.run(scenario())

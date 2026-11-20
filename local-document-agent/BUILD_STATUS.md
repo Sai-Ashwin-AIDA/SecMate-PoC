@@ -1,6 +1,10 @@
-# Slice 1 build status
+# Local document agent — build status
 
-**State:** Slice 1 audit fixes verified; Slice 2 implementation in progress.
+**Current state:** Slice 1 audit fixes and Slice 2 offline gate passed. CLI and
+sanitized diagnostics are implemented. Slice 3 is authorized but live inference
+is waiting for the user to fill the private app-local `.env` and confirm readiness.
+No live request has been made. See the latest handoff below; earlier sections are
+historical records, not claims about the current slice.
 
 ## Authority and preserved work
 
@@ -196,7 +200,7 @@ not a provider request.
   read the cited approved revision (or a confirmed newer Sai revision) and this
   status before editing; do not infer authorization to alter parent documentation.
 
-## Slice 2 handoff — not started
+## Original Slice 1 → Slice 2 handoff (historical; now implemented)
 
 Only after a separate Slice 2 assignment:
 
@@ -383,8 +387,174 @@ usability or future error-free behavior has been established by this audit.
   with the documented isolated/offline environment — **99 passed, 1 skipped**,
   exit 0, 7.77 seconds. Same user-approved symlink privilege skip.
 
-The user authorized proceeding to Slice 2 after these fixes. Slice 2 remains
-offline-only; no live inference is authorized. User also approved a tightly scoped
+At that gate, the user authorized Slice 2 only; live inference was not yet
+authorized. The user also approved a tightly scoped
 test-only exception for Windows asyncio's internal socketpair construction.
 External connections and DNS remain blocked during tests. No global Windows
 privileges or Developer Mode settings were changed.
+
+## Slice 2 offline completion and Slice 3 preparation
+
+### Authority, concurrency and authorization
+
+- Continued on **Sai only**, following the approved Section 0 staged contract.
+  The user subsequently authorized Slice 3, real fictional-content tests, and
+  bounded app-local sanitized error logs. This explicitly requested logging
+  supersedes the blueprint's earlier default of no persistent application log;
+  keys, personal document/chat content and raw provider payloads remain excluded.
+- During work, repository activity outside this agent advanced HEAD to `eba1b29`
+  (merge on Sai, following `a2eed4e` / `41fdd4a`). The application is now tracked
+  in that baseline and the local blueprint now includes Section 0. Preserved that
+  work. This agent did not stage, commit, merge, pull, push, clean or reset.
+- No SecMate component, parent dependency file, or LangChain reference file was
+  edited. All new work and notes remain inside `local-document-agent/`.
+
+### Implemented application files and interfaces
+
+- `agent.py`: explicit bounded model → validated tool → ToolMessage loop;
+  sequential execution, exact call-ID validation, ordinary error feedback,
+  repeated-failure stopping, no semantic repair loop, no retry/fallback.
+- `provider.py`: real `ChatOpenRouter` using exact pinned SDK/integration; explicit
+  SDK `retry_config=None` **and** `retries=None` per invocation; millisecond
+  request timeouts; fixed requested free route and no provider fallback. SDK
+  payload debug logging is disabled even with inherited `OPENROUTER_DEBUG`.
+- `prompts.py`: normal document-assistance instructions and honest transmission
+  disclosure; no evaluation objectives. Retrieved content is data, not authority.
+- `context.py` / `agent.py`: fresh per-turn observed-operation contexts with
+  bounded retained source metadata; whole-turn history pruning, monotonic source
+  IDs, failed-turn reference removal, `/new`, and no accumulating read-page event
+  log. Successful writes survive conversation failure/cancellation. Earlier
+  references exposed to the model are reported separately from new reads.
+- `cli.py`, `__main__.py`, `pyproject.toml`: actual installed console and module
+  entry points; chat, tool activity, observed source/output footers, uncertain
+  output warnings, reset/help/exit, EOF/cancellation, and configuration gates.
+  No fake or alternate-provider CLI mode.
+- `diagnostics.py`: ignored `.logs/errors.log`; 1 MiB current file and three
+  backups. Allowlisted timestamp/version/phase/code/session/tool metadata and up
+  to eight safe code-location frames. No exception prose, source lines, locals,
+  credentials, prompts, snippets, documents, draft bodies, raw responses or
+  document filenames enter the log API. Logging degradation is explicit, not
+  silently reported as durable success.
+- `examples/input/`: three fictional launch/budget/email samples.
+  `examples/live_smoke.py`: guarded real-model demonstrations with ordinary
+  prompts, actual tools and CLI renderer; no forced tools or scripted replies.
+  New isolated fictional roots per invocation, no personal input directory read.
+  Three turns, configured bounds, no automatic retries; a failed turn stops later
+  tasks. Actual outputs and metadata-only `outcomes.json` remain under ignored
+  `.cache/live-demo-<id>/`.
+- Updated `README.md`, local ignores and tests. The package version remains
+  `0.1.0`; Python 3.12.16, uv 0.13.9 and every dependency pin remain unchanged.
+
+### Commands and observed results
+
+All uv commands were run from the application directory using app-local uv/Python/
+cache settings, `UV_NO_ENV_FILE=1`, and offline test isolation. Tests never load
+the real application `.env` or construct a real network-connected provider.
+User-approved Windows internal socketpair creation is the only test networking
+exception; provider connections, direct outbound sockets and DNS are blocked.
+
+1. `uv lock --offline` — exit 0, 50 packages; no pin changes.
+2. `uv sync --frozen --offline --group dev --reinstall-package local-document-agent`
+   — exit 0, rebuilt/reinstalled **only** this application to install the real
+   console entry point.
+3. First Slice 2 focused run — **31 passed, 2 failed**, exit 1.
+   - The context-pruning fixture did not exceed its chosen budget; adjusted the
+     fixture to actually exercise whole-turn eviction.
+   - The real SDK correctly rejected a mock response missing its required
+     `system_fingerprint` field. Corrected that fixture and added a regression
+     asserting malformed success responses produce a sanitized protocol error.
+     No production coercion or framework patch was introduced.
+4. Focused rerun of those two cases — **2 passed**, exit 0.
+5. First complete Slice 2 suite:
+   `uv run --frozen --no-sync pytest --basetemp=.cache/pytest-slice2-full`
+   — **134 passed, 1 skipped**, exit 0, 20.32 seconds.
+6. Pre-live gate with cancellation/diagnostic regressions:
+   `uv run --frozen --no-sync pytest --basetemp=.cache/pytest-prelive-gate`
+   — **141 passed, 1 skipped**, exit 0, 22.46 seconds.
+7. Latest complete suite:
+   `uv run --frozen --no-sync pytest --basetemp=.cache/pytest-cli-final`
+   — **142 passed, 1 skipped**, exit 0, 21.91 seconds.
+8. `uv lock --check --offline` — exit 0, 50 packages.
+   `uv pip check --python .venv/Scripts/python.exe` — exit 0, 49 packages compatible.
+9. `git check-ignore` confirms `.env`, `.logs/errors.log`, `.venv` and `data/input`
+   are ignored. No secrets or generated personal data are staged.
+10. Final `uv sync --frozen --offline --group dev` — exit 0, 49 packages checked.
+    `git diff --check` — exit 0. Explicit source/documentation/fictional-sample
+    whitespace check — 33 files, zero findings; excluded the real `.env`.
+    Tracked changes are application-local only.
+
+Lock format remains version 1 / revision 5, with unchanged SHA-256:
+
+```text
+4434b4a502034626b21fd5ce9be9660f426450ce5d0b8817fcdec1d09784dc48
+```
+
+### What the offline gate now establishes
+
+- All original tool/audit regressions still pass.
+- Mocked agent and CLI sequences cover document summary, unsent reply draft and
+  report creation with actual local tools, not fabricated filesystem outcomes.
+- Real pinned LangChain → OpenRouter SDK → `httpx.MockTransport` tests prove
+  provider-compatible schemas, serialized calls/results, timeout units, exact
+  route, no inherited session/broadcast metadata, and no payload logging.
+- Mocked 401/402/429/500/400 and timeout responses make one transport attempt each;
+  no SDK retry/fallback occurs. A full real-SDK mocked-transport agent sequence
+  reads a file, creates a report, and returns genuine host provenance.
+- Invalid/missing/duplicate call IDs and malformed/truncated responses cannot
+  trigger filesystem effects. Unknown tools and bad arguments receive ordinary
+  correlated errors; repeated identical failed calls stop.
+- Tests cover model/tool/token/context limits, real request timeout, accelerated
+  real asyncio outer timeout, whole-turn eviction, 40 sequential bounded turns,
+  `/new`, cancellation, provider failure after a write, and cancellation after a
+  write. Successful/uncertain files remain distinct and visible.
+- Console and module `--help` work without credentials. Startup missing-key and
+  missing-consent errors do not construct a provider. Real startup/shutdown
+  boundaries are also exercised using an explicit injected test provider.
+- Rotating diagnostics exclude marker keys, user prompts, document/body text,
+  private filenames, exception prose and full machine paths. Disk write failure
+  marks diagnostics unavailable rather than disrupting a completed file write.
+- The explicit live-runner flag is checked before reading private configuration.
+
+### Actual Slice 3 credential gate — blocked, not run
+
+- The user said credentials were already app-local. A readiness-only check found
+  **no `local-document-agent/.env`**; it did not inspect parent environments or
+  print values and performed no inference.
+- At the user's request, created a private `.env` **exclusively**, from the blank
+  `.env.example`, with key empty and transmission consent false. Existing files
+  would not have been overwritten. Created/preserved app-local `data/input` and
+  `data/output`; no document collection was read.
+- Asked the user to add the key privately and set consent true, then confirm
+  readiness. Do not poll or repeatedly read the file while it is being edited.
+- **No authenticated live model request or live demonstration has run.**
+  Do not relabel mocked checks as Nemotron usability or claim final Slice 3
+  completion. No retries or fallback have been attempted.
+
+### Remaining limitations and next action
+
+- One approved skip remains: actual Windows symlink fixture creation privilege.
+  Actual junction, opened-handle and hard-link restrictions passed.
+- The pinned SDK expects particular response fields (including
+  `system_fingerprint`); catalog availability alone does not establish that the
+  live route returns a compatible shape. Unsupported responses are surfaced
+  safely, not repaired silently.
+- Model interpretation/source accuracy, live capacity, free quotas, provider
+  privacy policy, and live CLI usability remain unverified. No application can
+  promise zero provider/model errors or durable logging when storage is broken.
+- After the user confirms private key setup, check readiness without displaying
+  values, then run once:
+
+  ```powershell
+  $env:UV_NO_ENV_FILE="1"
+  .\.tools\bin\uv.exe run --frozen --no-sync python examples/live_smoke.py --run-live
+  ```
+
+  Use only fictional example roots. Record the actual summary/reply/report
+  outcomes, output paths, safe error codes and any not-run tasks here. If a defect
+  is reproduced, fix narrowly, rerun affected offline checks, and discuss any
+  consequential change before another live attempt. Do not retry until success,
+  force tools, swap models, or broaden scope.
+- Normal CLI is ready after private setup:
+  `uv run --frozen --no-sync local-document-agent` (or the module entry point).
+  See README for app-local uv path and configuration. No API adapter, onboarding
+  UI, SecMate changes, production infrastructure, commit or push is authorized.
