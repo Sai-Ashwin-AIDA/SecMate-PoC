@@ -6,6 +6,112 @@
 
 **Reference verification date:** 2026-11-20.
 
+## 0. Approved staged build contract — read before implementation
+
+The user approved **three bounded implementation slices**, isolated setup, and an
+application-local continuation record. This section controls implementation order;
+later requirements describe the finished application, not permission to build all
+of it in the first assignment. No slice promises zero model/provider errors.
+
+### 0.1 Scope and setup authorization
+
+- All application code, dependency files, environment, tests, examples and build
+  notes belong under `local-document-agent/`. Do not modify SecMate components,
+  parent dependency files, or the LangChain reference checkout.
+- The builder may install `uv`, Python 3.12 if missing, and the pinned packages in
+  the application's own environment. Follow work-device software policy; ask if
+  privileges or network access are unavailable. Package downloads are not inference.
+- Verify the actual workspace root and existing application files first. Paths in
+  Section 2 describe the earlier reference machine, not a mandatory location on
+  every device. If reference source is absent, use the linked version-matched
+  official public sources for a specific unresolved API question; do not clone or
+  scan a framework to repeat already documented discovery.
+- Actual dependency resolution/installation was not verified while authoring the
+  blueprint. Slice 1 must check it. If pins cannot resolve, report the exact conflict
+  and request a narrow correction; do not silently upgrade or install from Git.
+- Do not stage, commit, push, clean or reset. Generating `uv.lock` means creating
+  the application artifact, not making a Git commit. Preserve concurrent changes.
+- Never load a parent SecMate `.env`, reuse its venv, print a key, or place real
+  personal documents in tests. New environment examples contain no key values.
+
+### 0.2 Slice 1 — real local tools, no model or interactive CLI
+
+Deliver the independent package, Python/dependency declaration, resolved `uv.lock`,
+`.python-version`, local ignores, `.env.example`, setup notes, strict tool/result
+contracts, a minimal source ledger/tool context, filesystem/text/email helpers,
+and exactly the three real LangChain tool wrappers. Use Sections 4–12 and the
+applicable filesystem/text/tool tests in Section 19. A small application-owned
+context may supply roots, observed read references and created-file records; no
+conversation/model orchestration is needed to exercise these tools.
+
+Prove on temporary sample files that search discovers, read returns actual bounded
+content with a host-issued source reference, and create writes a real report or
+unsent draft exclusively in output. Include relevant malformed/unsupported input,
+path/root/reparse checks, strict argument rejection, source-reference validation
+and existing-file preservation. Prefer meaningful parameterized cases, not a
+large numbered acceptance matrix or a separate retained artifact per assertion.
+
+**No live or mocked agent loop, model construction, provider request, interactive
+CLI, API/server, SecMate onboarding or reference-framework edit in this slice.**
+Installing the declared model integration is allowed; constructing it is deferred.
+The planned CLI entry points may be recorded, but do not ship a fake successful
+CLI, canned assistant response, or call an absent command usable.
+
+Exit: application installs in isolation, imports its local tools without a key or
+network, focused real-file tests pass, and the tools perform the ordinary
+search/read/create sequence directly. This establishes tool correctness, not
+Nemotron behavior or a completed assistant. Stop before Slice 2.
+
+### 0.3 Slice 2 — bounded agent loop and usable CLI, offline verification
+
+Implement provider construction, normal assistant instructions, the explicit
+LangChain message/tool loop, deadlines/budgets, source/history lifecycle and CLI
+from Sections 6 and 13–16. Implement the entry points only when they are callable.
+Preserve Slice 1 tool behavior; add the mocked agent/provider/CLI tests in Section
+19, including exact call/result correlation, no SDK retries, unknown/invalid tool
+feedback, read/create provenance, `/new`, limits, cancellation and failure after a
+successful write. Exercise the real integration boundary with a mocked transport
+where needed, not only an application fake that bypasses serialization/retries.
+
+Exit: an installed CLI can run the three task shapes with clearly mocked providers
+in tests; documented normal CLI startup is ready for a user-supplied key. No real
+inference, API adapter, UI or SecMate work. Stop before Slice 3.
+
+### 0.4 Slice 3 — bounded live usability and user handover
+
+After offline gates pass, obtain explicit authorization for a small live session
+and fictional/sample content under the OpenRouter data-handling policy. The user
+enters the key privately. Run the three ordinary demonstrations in Section 20
+against the selected route, with actual model decisions and local file tools;
+confirm source grounding, created files and the unsent-draft boundary. No forced
+tools, scripted live responses, silent coercion, fallback or retry-until-success.
+Fix only reproduced defects in these workflows and rerun only the affected checks;
+do not create a general audit or attempt to prove immunity to all attacks.
+
+Exit: report actual task outcomes, useful CLI instructions, observed limitations
+and outstanding issues. An unavailable provider does not invalidate offline work,
+but live usability must remain explicitly unverified. SecMate API onboarding stays
+deferred regardless of whether the CLI demonstrations succeed.
+
+### 0.5 Offline configuration and continuity
+
+The startup requirements in Section 5.2 apply when starting the **real model-backed
+assistant**. Pure filesystem/text/tool imports and Slice 1 tests must not require
+an API key, transmission acknowledgement, provider client or live `.env`. Separate
+local-file settings/context validation from provider readiness; do not weaken the
+real CLI's provider gates or hide missing keys with dummy production defaults.
+Tests may inject explicit safe configuration and model fakes. They must block
+network and tracing before relevant integration calls and use temporary roots.
+
+Each builder maintains `local-document-agent/BUILD_STATUS.md` as the operational
+handoff: actual completed slice, changed files, Python/package/lock versions,
+commands and exit/results, meaningful skipped checks with reasons, limitations,
+next slice and its stop condition. Initially no slice is implemented; do not fill
+in passing results before execution. The blueprint stays the design authority;
+the status records reality. Update only app-local notes during implementation,
+asking before changing this approved contract. An agent entering a later session
+reads both files before editing and does not redo completed slices by default.
+
 ## 1. Builder assignment
 
 Build a small, independent LangChain personal document assistant with a working local CLI.
@@ -155,6 +261,7 @@ SecMate-PoC/
     ├── .gitignore
     ├── .env.example
     ├── README.md
+    ├── BUILD_STATUS.md              # Actual slice results and next-agent handoff
     ├── src/
     │   └── local_document_agent/
     │       ├── __init__.py
@@ -240,7 +347,9 @@ local-document-agent = "local_document_agent.cli:main"
 
 Put `pytest` in the `dev` dependency group. Use ordinary standard-library CLI input/output; no Rich, Typer, email service SDK, document-loader collection, or vector-store dependency is needed.
 
-Generate and commit the application’s own `uv.lock` during implementation, locking all transitive dependencies. Then use frozen synchronization.
+Generate the application’s own `uv.lock` during Slice 1, locking all transitive
+dependencies. Then use frozen synchronization. Preserve it as a source artifact;
+do not stage or commit unless the user separately requests it.
 
 Do not install `langchain-openai` merely because OpenRouter offers an OpenAI-compatible API. The dedicated integration is sufficient.
 
@@ -282,7 +391,7 @@ Load only `<application-root>/.env` using an explicit path and `override=False`.
 
 ### 5.2 Required validation
 
-Fail at startup with a concise configuration error if:
+Fail when starting the real model-backed CLI with a concise configuration error if:
 
 - The API key is absent or blank.
 - Transmission acknowledgement is not explicitly enabled.
@@ -290,6 +399,10 @@ Fail at startup with a concise configuration error if:
 - Directory confinement validation fails.
 - A numeric setting is invalid.
 - Tracing is enabled through known LangChain/LangSmith tracing variables.
+
+Offline tool/helper imports and tests do not construct a provider or require a
+key/transmission acknowledgement; apply the separate local settings validation
+described in Section 0.5. Missing credentials never become a silent fake CLI mode.
 
 Reject redirects of configuration to an alternate inference endpoint. The base URL is documented for transparency, not arbitrary endpoint selection.
 
@@ -1105,7 +1218,7 @@ uv sync --frozen --group dev
 New-Item -ItemType Directory -Force ".\data\input"
 New-Item -ItemType Directory -Force ".\data\output"
 
-Copy-Item ".\.env.example" ".\.env"
+if (-not (Test-Path -LiteralPath ".env")) { Copy-Item -LiteralPath ".env.example" -Destination ".env" }
 notepad ".\.env"
 ```
 
@@ -1139,7 +1252,7 @@ Equivalent module entry point:
 uv run --frozen --no-sync python -m local_document_agent
 ```
 
-After the initial lock is committed, ordinary setup uses:
+After the initial lock is generated and retained, ordinary setup uses:
 
 ```powershell
 uv sync --frozen --group dev
@@ -1148,6 +1261,10 @@ uv sync --frozen --group dev
 Do not regenerate the lock during normal startup. Do not activate or reuse a SecMate environment. Do not run installation commands inside the LangChain reference checkout.
 
 ## 18. Short implementation order
+
+Follow the assigned slice boundaries in Section 0. Steps 1–3 below belong to
+Slice 1, steps 4–5 to Slice 2, and the authorized live demonstrations to Slice 3.
+Tests are added alongside each component, not postponed until the whole app exists.
 
 1. **Create the independent package.** Add exact dependency pins, application-local ignores, environment example, packaging entry points, and lockfile.
 2. **Implement filesystem and text helpers.** Test boundaries, exclusive creation, UTF-8 decoding, and plain-text email extraction before adding inference.
