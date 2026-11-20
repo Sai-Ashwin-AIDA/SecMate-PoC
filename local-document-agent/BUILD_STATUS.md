@@ -618,3 +618,13 @@ Lock format remains version 1 / revision 5, with unchanged SHA-256:
   results above remain historical, not new live/model evidence.
 - No staging, commits, pushes, SecMate changes, parent dependency edits, reference
   checkout edits, or live inference were performed for this assignment.
+
+## Phase 1 HTTP foundation — 2026-11-20
+
+Authenticated app-local HTTP foundation implemented; latest complete offline gate:
+**190 passed, 1 skipped** (existing Windows symlink privilege limitation).
+Exact optional HTTP dependencies, actual commands, failed-attempt correction,
+ownership/cleanup limitations and human checklist are recorded in
+[`LOCAL_DOCUMENT_AGENT_SECMATE_PHASE1_RESULTS.md`](../Documents/LOCAL_DOCUMENT_AGENT_SECMATE_PHASE1_RESULTS.md).
+No live HTTP/model check or SecMate integration was performed. Human review and
+acceptance are **PENDING**; Phase 2 permission is **NOT GRANTED**. Stop here.

@@ -18,8 +18,12 @@ dependencies = [
     "python-dotenv==1.2.1",
 ]
 
+[project.optional-dependencies]
+http = ["fastapi==0.121.3", "uvicorn==0.38.0"]
+
 [project.scripts]
 local-document-agent = "local_document_agent.cli:main"
+local-document-agent-http = "local_document_agent.http_cli:main"
 
 [dependency-groups]
 dev = ["pytest==9.0.2"]

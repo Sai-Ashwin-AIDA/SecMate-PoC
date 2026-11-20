@@ -359,7 +359,13 @@ storage is not a guarantee of private/offline inference or provider zero retenti
 
 Supported capabilities are search/read/answer/summarize/new report/unsent draft.
 There is no web browsing, shell, PDF/Office/OCR, attachment extraction, email
-sending/synchronization, calendar, permanent memory, scheduler, frontend or API adapter.
+sending/synchronization, calendar, permanent memory, scheduler or frontend.
+The optional Phase 1 HTTP service is separate from this CLI and is **not SecMate
+integration**. See [HTTP startup, authentication and usage](README.md#optional-phase-1-http-service--human-review-required).
+HTTP always uses the Harbor-only input root, so its document paths omit
+`mock-workspace/` (for example, `projects/harbor/overview.md`). Its shared output
+remains create-only. Human review and separately authorized live checks are
+pending; do not run a model-backed HTTP request just to check readiness.
 
 ## 12. Quick orientation to the fictional facts
 

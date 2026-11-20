@@ -53,8 +53,11 @@ def test_installed_cli_points_to_real_callable():
 
     package = distribution("local-document-agent")
     entries = [entry for entry in package.entry_points if entry.group == "console_scripts"]
-    assert len(entries) == 1 and entries[0].name == "local-document-agent"
-    assert callable(entries[0].load())
+    assert {entry.name: entry.value for entry in entries} == {
+        "local-document-agent": "local_document_agent.cli:main",
+        "local-document-agent-http": "local_document_agent.http_cli:main",
+    }
+    assert all(callable(entry.load()) for entry in entries)
 
 
 def test_tools_import_without_env_key_consent_or_provider(tmp_path):

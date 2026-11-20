@@ -11,8 +11,9 @@ this workspace, with reusable source files in `examples/mock-workspace/`.
 **The user reports live CLI responses, but the three builder-run live workflow
 demonstrations remain unrecorded.** See `BUILD_STATUS.md` for actual outcomes.
 Normal CLI use requires your OpenRouter key and explicit transmission consent.
-There is no fake-success CLI mode, HTTP adapter, email sending, alternate model,
-paid fallback, or SecMate integration.
+There is no fake-success CLI mode, email sending, alternate model, paid fallback,
+or SecMate integration. An optional authenticated loopback HTTP foundation is
+documented below; it is not SecMate onboarding or assessment execution.
 
 Design authority: the blueprint on GitHub branch **Sai**, including Section 0.
 The local blueprint was initially older; concurrent repository updates have now
@@ -349,3 +350,159 @@ credentials. Exit 0 means the observed workflow checks passed, not independent
 semantic certification of the model's answer. Exit 1 indicates an unsuccessful
 workflow; exit 2 indicates private configuration/consent is not ready. This sample
 runner reads only the app-local `.env`, deliberately ignoring ambient provider keys.
+
+## Optional Phase 1 HTTP service — human review required
+
+Authority: `Documents/LOCAL_DOCUMENT_AGENT_SECMATE_INTEGRATION_BLUEPRINT.md`.
+Actual checks/limitations and the pending human acceptance gate:
+[`LOCAL_DOCUMENT_AGENT_SECMATE_PHASE1_RESULTS.md`](../Documents/LOCAL_DOCUMENT_AGENT_SECMATE_PHASE1_RESULTS.md).
+The CLI is unchanged. HTTP is a separate process/environment entry point, not a
+SecMate route. No live HTTP inference is implied by the offline checks.
+
+Install the optional stack in this application's environment only:
+
+```powershell
+$env:UV_CACHE_DIR = "$PWD\.cache\uv"
+$env:UV_PYTHON_INSTALL_DIR = "$PWD\.python"
+$env:UV_PYTHON_BIN_DIR = "$PWD\.tools\bin"
+$env:UV_NO_ENV_FILE = "1"
+.\.tools\bin\uv.exe sync --frozen --extra http --group dev
+.\.tools\bin\uv.exe run --frozen --no-sync local-document-agent-http --help
+```
+
+Direct HTTP pins: FastAPI **0.121.3**, base Uvicorn **0.38.0**, not standard
+extras. Ordinary installs without `--extra http` need no HTTP stack.
+
+Privately set `LOCAL_DOCUMENT_AGENT_ADAPTER_TOKEN` in the app-local `.env` or
+process environment, distinct from the provider key. Use a high-entropy ASCII
+token without whitespace. No token is generated for you or exposed in metadata.
+Retain the app's own provider key, route and explicit transmission consent.
+Never use SecMate's configuration. Settings are loaded once at startup with
+process values taking precedence, without parent search or interpolation.
+
+HTTP roots are **fixed relative to the selected app root**:
+
+- Input: `data/input/mock-workspace` only; **not** `data/input/test.txt`.
+- Output: existing shared `data/output`, exclusively new flat `.txt`/`.md` files.
+- HTTP ignores the CLI's `DOCUMENT_INPUT_DIR`/`DOCUMENT_OUTPUT_DIR` values.
+- Roots must already exist and pass the existing confinement validation. If
+  absent, inspect authenticated readiness and ask the operator before creating
+  directories/copying `examples/mock-workspace`; never merge a nonempty target.
+  Startup/metadata do not create roots or read document bodies.
+
+Start manually from this application:
+
+```powershell
+.\.tools\bin\uv.exe run --frozen --no-sync local-document-agent-http
+# Explicit alternate loopback port, only after resolving a local conflict:
+# .\.tools\bin\uv.exe run --frozen --no-sync local-document-agent-http --port 7311
+```
+
+Default is `127.0.0.1:7310`, one worker, no reload, no CORS/cookies, no redirects,
+no access/body/header logs. `--app-root PATH` selects explicit app-local settings;
+HTTP roots remain fixed beneath it. Missing adapter token prevents startup.
+Missing key/consent/roots is reported as not-ready, without a provider connection.
+`--help` needs neither settings nor credentials and performs no writes.
+
+### Authenticated contract
+
+Every endpoint requires `Authorization: Bearer <adapter-token>`, including
+metadata. Documentation/schema endpoints are disabled. Fetch metadata without
+inference; enter your token privately, not as a literal shell command:
+
+```powershell
+$secret = Read-Host "Adapter bearer token" -AsSecureString
+$headers = @{ Authorization = "Bearer " + [System.Net.NetworkCredential]::new("", $secret).Password }
+Remove-Variable secret
+$metadata = Invoke-RestMethod -Uri "http://127.0.0.1:7310/v1/metadata" -Headers $headers
+$metadata
+```
+
+Metadata declares configured, **unverified** model/provider identity, readiness,
+logical scopes, effective bounds and observation gaps. It proves neither a
+successful model call nor security-test coverage. Missing/wrong tokens return
+401, unknown runs 404, strict validation failures 422, oversized bodies 413,
+instance/submission/busy conflicts 409, readiness/capacity failures 503.
+
+**Only after separately authorizing a benign live model call**, submit one exact
+message, then poll the returned relative status path:
+
+```powershell
+$body = @{
+    contract_version = "secmate-agent-http-v1"
+    adapter_instance_id = $metadata.adapter_instance_id
+    submission_id = [guid]::NewGuid().ToString()
+    message = "Read projects/harbor/overview.md and briefly summarize it with references."
+} | ConvertTo-Json -Compress
+$ack = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:7310/v1/runs" -Headers $headers `
+    -ContentType "application/json; charset=utf-8" -Body ([Text.Encoding]::UTF8.GetBytes($body))
+$run = Invoke-RestMethod -Uri ("http://127.0.0.1:7310" + $ack.status_path) -Headers $headers
+# Explicit cancellation of this run only:
+# Invoke-RestMethod -Method Post -Uri ("http://127.0.0.1:7310" + $ack.cancel_path) -Headers $headers
+```
+
+Request has exactly four required fields above, with no unknown fields/coercion.
+IDs are canonical lowercase hyphenated UUIDs. Message is nonblank valid UTF-8,
+1–4000 characters, preserved exactly (including accepted surrounding whitespace).
+Actual streamed body is bounded to 32 KiB before JSON parsing. Request SHA-256
+hashes exact message UTF-8 bytes, not the JSON envelope.
+
+202 acknowledgements contain contract/instance/submission/run IDs, request hash,
+UTC acceptance time, current state and relative status/cancel paths. Lifecycle:
+`accepted`, `running`, `completed`, `failed`, `limited`, `cancelled`.
+One fresh assistant/session per accepted run; no continuation, queue or fallback.
+Only accepted runs construct providers, lazily; polling/metadata never do.
+
+Same-instance same-submission same-message retry returns the existing run,
+**without another model/file operation**, even when busy or capacity is full.
+Reusing that ID for different message bytes returns `SUBMISSION_CONFLICT`.
+A different submission while occupied gets `TARGET_BUSY`. At **32 retained
+runs**, new submissions get `RUN_CAPACITY_REACHED`; receipts are never evicted.
+Collect results before a deliberate restart. Storage is in-memory only: restart
+changes the instance UUID and old IDs return `ADAPTER_INSTANCE_CHANGED`. Loss of
+an old record means **unknown transport disposition**, not proof nothing ran or
+was written. Never automatically resubmit under a new instance/submission ID.
+
+Polling includes lifecycle times, timing/limits and bounded tool summaries.
+Final `result` wraps the existing `TurnResult`: exact answer and UTF-8 SHA-256,
+session/status, observed source ranges/raw hashes, created-file bytes/hashes,
+uncertain outputs, retained references, unverified citation IDs and safe errors.
+Source IDs are run/session-local; file references are root-relative. Observed
+model/provider and complete model-call usage are unavailable/null, not guessed
+from configuration or prose. No file download or output-directory scan exists.
+Terminal snapshot bytes are stable across polling and terminal cancellations.
+
+Cancellation is idempotent and does not mean settlement until the task finishes.
+Disconnecting a poll does not cancel a run. Already-written/possibly partial files
+remain reported; nothing rolls them back. The slot remains occupied through both
+provider-client closures. Closure failure gives lifecycle `failed` with separate
+`adapter_error`/`cleanup_status`, preserving the core result/status unchanged;
+the slot then stays unavailable until operator review and deliberate restart.
+
+Shutdown stops accepting new runs and uses **one total 10-second cooperative
+deadline** for active cancellation plus cleanup. Timeout logs sanitized
+`SHUTDOWN_TIMEOUT`, leaves unsettled state/disposition unknown and retains the
+slot; it does not claim cancellation, resource closure or file rollback.
+Cooperative deadlines cannot preempt a hung synchronous filesystem operation.
+No run/cleanup retry, durable resume, output cleanup or automatic restart exists.
+Errors use the existing bounded sanitized diagnostic log; no payloads are logged.
+
+### Offline gate (no live service or inference)
+
+After installing the `http` extra, use the isolated app-local test environment:
+
+```powershell
+$env:UV_NO_ENV_FILE = "1"
+$env:PYTEST_DISABLE_PLUGIN_AUTOLOAD = "1"
+.\.tools\bin\uv.exe run --frozen --no-sync pytest tests/test_http.py --basetemp=.cache/pytest-http-focused
+.\.tools\bin\uv.exe run --frozen --no-sync pytest --basetemp=.cache/pytest-http-phase1
+.\.tools\bin\uv.exe lock --check --offline
+.\.tools\bin\uv.exe pip check --python .venv/Scripts/python.exe
+```
+
+All HTTP tests use in-process ASGI, temporary roots and explicit mocked provider
+boundaries; at least one sequence traverses the real pinned SDK MockTransport.
+Outbound traffic/tracing remain blocked by the existing test isolation. These
+tests establish adapter/tool wiring, not real-model interpretation or live
+service usability. Human review/manual HTTP checks are pending; **stop before
+Phase 2**, which is neither implemented nor authorized.
