@@ -1,0 +1,32 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "local-document-agent"
+version = "0.1.0"
+description = "Independent bounded LangChain document assistant with a local CLI."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "langchain==1.5.2",
+    "langchain-core==1.8.4",
+    "langgraph==1.2.16",
+    "langchain-openrouter==0.3.0",
+    "openrouter==0.9.2",
+    "pydantic==2.12.5",
+    "python-dotenv==1.2.1",
+]
+
+[project.scripts]
+local-document-agent = "local_document_agent.cli:main"
+
+[dependency-groups]
+dev = ["pytest==9.0.2"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/local_document_agent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-config --strict-markers"

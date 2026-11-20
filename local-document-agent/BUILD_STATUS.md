@@ -1,0 +1,390 @@
+# Slice 1 build status
+
+**State:** Slice 1 audit fixes verified; Slice 2 implementation in progress.
+
+## Authority and preserved work
+
+- Followed GitHub branch `Sai`, revision `41fdd4a3a40a3e476db151ebad501f763890d5cd`,
+  including Section 0 of `Documents/LOCAL_DOCUMENT_AGENT_BLUEPRINT.md`.
+- The local blueprint is older and was deliberately not overwritten or pulled.
+- Initial Git status: existing untracked `LangChain/`; preserved untouched.
+- Only `local-document-agent/` files have been added. Nothing staged, committed,
+  pushed, cleaned or reset.
+- User explicitly chose to record the host symlink-privilege skip rather than
+  change Windows privileges/Developer Mode.
+
+## Environment and resolution actually performed
+
+- Application-local `uv` 0.13.9, installed using the existing Python 3.11:
+  `python -m pip install --disable-pip-version-check --target .tools uv` — exit 0.
+- `uv python install 3.12 --no-install-bin` — exit 1; this uv version does not
+  recognize that option. No dependency pins were changed.
+- `uv python install 3.12` with app-local install/bin/cache settings — exit 0;
+  installed CPython 3.12.16 under `.python/`.
+- `uv lock` — exit 0; resolved 50 packages, including the application.
+- `uv sync --frozen --group dev` — exit 0; installed 49 packages in `.venv/`.
+- All eight declared runtime/development dependency pins and
+  `hatchling==1.27.0` are unchanged. No Git/editable framework dependency.
+
+Installed versions read from distribution metadata:
+
+| Package/runtime | Actual version |
+|---|---|
+| CPython | 3.12.16 (Windows x86-64) |
+| uv | 0.13.9 |
+| local-document-agent | 0.1.0 |
+| langchain | 1.5.2 |
+| langchain-core | 1.8.4 |
+| langgraph | 1.2.16 |
+| langchain-openrouter | 0.3.0 |
+| openrouter | 0.9.2 |
+| pydantic | 2.12.5 |
+| python-dotenv | 1.2.1 |
+| pytest | 9.0.2 |
+
+Lock format: **version 1, revision 5**, 50 package records. Registry sources use
+`https://pypi.org/simple`; the application is the sole local editable package.
+Build-system hatchling is pinned separately in `pyproject.toml` and used in the
+isolated packaging build; it is not claimed to be a runtime installation.
+
+`uv.lock` SHA-256:
+
+```text
+4434b4a502034626b21fd5ce9be9660f426450ce5d0b8817fcdec1d09784dc48
+```
+
+## Actual files delivered
+
+All paths below are relative to `local-document-agent/`:
+
+```text
+pyproject.toml
+uv.lock
+.python-version
+.gitignore
+.env.example
+README.md
+BUILD_STATUS.md
+src/local_document_agent/__init__.py
+src/local_document_agent/config.py
+src/local_document_agent/contracts.py
+src/local_document_agent/context.py
+src/local_document_agent/filesystem.py
+src/local_document_agent/text.py
+src/local_document_agent/tools.py
+tests/conftest.py
+tests/test_contracts_config.py
+tests/test_filesystem.py
+tests/test_text.py
+tests/test_tools.py
+```
+
+Ignored local setup artifacts: `.tools/`, `.python/`, `.cache/`, `.venv/`, Python
+bytecode, and pytest cache. No private `.env` or personal document collection was
+created. Harmless test data is confined to dedicated application-local temporary
+directories.
+
+No `provider.py`, `agent.py`, `prompts.py`, `cli.py`, `__main__.py`, console script,
+API module, or model mock/loop was added. The full blueprint's future package tree
+is not a claim that those later-slice files exist.
+
+## Verification commands and actual results
+
+From the application directory, setup used:
+
+```powershell
+$env:UV_CACHE_DIR = "$PWD\.cache\uv"
+$env:UV_PYTHON_INSTALL_DIR = "$PWD\.python"
+$env:UV_PYTHON_BIN_DIR = "$PWD\.tools\bin"
+```
+
+Offline test/check commands used:
+
+```powershell
+$env:UV_NO_ENV_FILE = "1"
+$env:PYTEST_DISABLE_PLUGIN_AUTOLOAD = "1"
+.\.tools\bin\uv.exe run --frozen --no-sync pytest --basetemp=.cache/pytest-slice1-complete
+.\.tools\bin\uv.exe lock --check --offline
+.\.tools\bin\uv.exe pip check --python .venv/Scripts/python.exe
+```
+
+Final completed suite: **81 passed, 1 skipped**, exit 0, 10.50 seconds.
+Lock consistency check: exit 0, 50 packages, no lock regeneration.
+Installed dependency compatibility check: exit 0, 49 packages compatible.
+Final `uv sync --frozen --offline --group dev`: exit 0, 49 packages checked;
+no lock regeneration or version changes.
+Source/documentation whitespace check: exit 0, 18 files, no trailing whitespace.
+Final parent `git diff --name-only`: empty; only this new application and the
+pre-existing untracked `LangChain/` remain untracked. No staging/commits/pushes.
+
+Tests use application-local temporary roots and block socket connections/DNS
+before application-module imports. Tracing is disabled and inherited
+provider/tracing credentials are removed in the test process.
+
+Earlier execution history (preserved rather than relabelled as passing):
+
+1. Initial full run: **69 passed, 2 failed, 1 skipped**, exit 1.
+   - Provider-facing subset schema dropped `additionalProperties: false`.
+     Fixed by exposing each original strict Pydantic argument schema.
+   - Windows asyncio self-pipe attempted a loopback socket blocked by the
+     network guard. The synchronous async-wrapper test now drives its
+     non-suspending coroutine without creating an event loop.
+   - Symlink fixture skipped: host lacks creation privileges/developer mode.
+     The actual junction fixture and opened-handle boundary checks passed.
+2. Focused rerun of those two failures: **2 passed**, exit 0.
+3. Full run after bounded-I/O and valid-UTF-8 adjustments:
+   **72 passed, 1 skipped**, exit 0.
+4. Final suite above additionally proves direct search/read/create for all three
+   input formats, inventory count bounds, exclusive-open collision preservation,
+   failed-write provenance, source-ledger bounds, and sanitized permission errors.
+
+An early installed-API signature inspection exceeded a 10-second command timeout;
+rerunning it with a 120-second allowance succeeded. This was an import inspection,
+not a provider request.
+
+## What the passing tests establish
+
+- Exact three LangChain tools, simple strict provider-compatible schemas with
+  `additionalProperties: false`, and host rejection without argument coercion.
+- Direct real-file search/read/create sequences for `.txt`, `.md`, and `.eml`.
+- Stable literal search ordering/pagination/snippets, partial results, aggregate
+  byte bounds, and no source registrations from discovery alone.
+- Actual page content, raw hashes, completeness, normalized/extracted line
+  references, changing-version warnings, and bounded source ID allocation.
+- Real reports and explicitly unsent drafts with validated source references,
+  UTF-8/LF bytes, actual write hashes/counts, and original-file preservation.
+- Traversal/drive/UNC/device/ADS/reserved-path rejection, root separation, actual
+  Windows junction rejection, opened-handle boundaries, and hard-link rejection.
+- Exclusive creation preserves an existing file even after a racing creator wins
+  between preflight and exclusive open. Failed fsync never registers success.
+- Strict decoding, malformed/HTML-only email failures, attachment/HTML omission,
+  oversized raw/extracted/output handling, and no fabricated content on errors.
+- Tool-call IDs and success/error `ToolMessage` status are preserved. This is
+  direct tool invocation, not a mocked agent loop.
+- Fresh-process import requires no API key, transmission consent, `.env`, network,
+  or `langchain_openrouter` module import. Package has no fake CLI entry point.
+
+## Skipped checks and reasons
+
+- **1 actual symlink fixture:** insufficient Windows symlink creation privilege/
+  Developer Mode. User approved recording the skip. No host policy or privilege
+  changes were attempted. Junction and reparse restrictions were exercised with
+  a real Windows junction; do not claim the actual symlink fixture passed.
+- **All model/provider/agent/CLI checks:** intentionally out of Slice 1. No
+  authenticated inference, provider construction, agent fake, SDK retry transport
+  test, conversational summary, or model-generated draft was run.
+- **Other operating systems and adversarial filesystem races:** not certified.
+  Filesystem checks are not an OS sandbox.
+
+## Limitations and remaining issues
+
+- No known failing Slice 1 test. Actual symlink creation remains host-unverified.
+- Conservative email rejection can reject imperfect exports. HTML-only content,
+  attachments, unsupported formats, and oversized/overlong pages remain unavailable.
+- Output access preflight is advisory on Windows; real file operations can still
+  fail. A failed write may leave a partial new file; no successful record is
+  emitted, no deletion is guessed, and no automatic retry occurs.
+- Local calls use bounded synchronous filesystem I/O; cooperative deadlines cannot
+  interrupt a hung OS call. Hostile concurrent path replacement is outside the
+  documented threat model.
+- `ToolContext` is an active sequential host context, not a session manager. It
+  holds at most 32 registered read ranges and 32 successful create records.
+  Slice 2 must manage turn/retained-source lifecycle and prune observed page data.
+- No assistant/model behavior, semantic factual accuracy, prompt-injection
+  immunity, provider availability, or live usability has been established.
+- GitHub Sai's Section 0 is newer than the local blueprint. The next builder must
+  read the cited approved revision (or a confirmed newer Sai revision) and this
+  status before editing; do not infer authorization to alter parent documentation.
+
+## Slice 2 handoff — not started
+
+Only after a separate Slice 2 assignment:
+
+1. Preserve these tool contracts, confinement checks, and passing real-file tests.
+2. Add `provider.py`, `prompts.py`, `agent.py`, and callable CLI/module entry points.
+3. Apply the real inference readiness gate and explicit app-local environment
+   loading. Never use dummy production keys or load SecMate configuration.
+4. Implement the explicit bounded LangChain message/tool loop, ordinary assistant
+   role instructions, sequential dispatch, history/source lifecycle, deadlines,
+   budgets, observed activity, `/new`, cancellation, and write-failure reporting.
+5. Add offline mocked provider/agent/CLI tests. At the actual integration transport
+   boundary, verify `retries=None` disables the SDK retry default, request timeout
+   units, exact route, and proper tool-result serialization/correlation.
+6. Add no real inference, server, adapter, UI, or SecMate changes.
+
+Slice 2 exit: installed usable CLI works with explicitly mocked providers in tests
+and documented real startup is ready for a user-supplied private key. Stop before
+Slice 3. Live demonstrations require separate explicit authorization and harmless
+sample content; the key must be entered privately.
+
+## Independent Slice 1 audit — 2026-11-20
+
+**Verdict:** substantial, correctly isolated Slice 1 integration, but not an
+unqualified clean handoff. Fix blockers A1–A2 and rerun focused regressions before
+relying on the tools in Slice 2. A3–A4 are nonblocking integration corrections.
+This audit does not certify absence of other defects or future provider issues.
+Earlier completion statements above are the builder's record, not this verdict.
+
+### Scope and verification
+
+- Read the README, existing status, all application modules and tests, dependency
+  declaration, example configuration and ignores. Design authority was the
+  read-only GitHub blueprint at `41fdd4a3a40a3e476db151ebad501f763890d5cd`,
+  Section 0 and applicable Sections 4–12/19, not the older local blueprint.
+- Initial `git status --short` from the parent repository returned only
+  `?? LangChain/` and `?? local-document-agent/`. Neither was staged or changed
+  outside this authorized status append. No installation, model construction,
+  inference, private environment loading, or SecMate/framework edits.
+- Exact test command, from `local-document-agent/`:
+
+  ```powershell
+  $env:UV_CACHE_DIR="$PWD\.cache\uv"
+  $env:UV_PYTHON_INSTALL_DIR="$PWD\.python"
+  $env:UV_NO_ENV_FILE="1"
+  $env:PYTEST_DISABLE_PLUGIN_AUTOLOAD="1"
+  .\.tools\bin\uv.exe run --frozen --no-sync pytest --basetemp=.cache/pytest-audit
+  ```
+
+  **Exit 0: 81 passed, 1 skipped in 7.00s**, CPython 3.12.16, pytest 9.0.2.
+  Skip: `tests/test_filesystem.py:93`, host lacks symlink privileges/Developer
+  Mode. Actual junction, hard-link, opened-handle and exclusive-open tests passed.
+  No dependency resolution or installation was repeated.
+- One additional stdin probe used the same environment and exact runner
+  `@' ... '@ | .\.tools\bin\uv.exe run --frozen --no-sync python -` (exit 0).
+  Before application imports it removed inherited `OPENROUTER_*`, `LANGSMITH_*`
+  and `LANGCHAIN_*` settings, set all three known tracing flags false, and
+  blocked socket connect/connect_ex/sendto, connection helpers and DNS helpers.
+  It also used `tracing_context(enabled=False)` throughout. Only fictional
+  files under an ignored `.cache/audit-probe-*` TemporaryDirectory were used;
+  that directory was removed by its context manager. Reproduction inputs and
+  actual outputs are recorded below; these were probes, not added pytest tests.
+
+### Blockers — builder fixes required
+
+**A1 — High: ambiguous MIME headers bypass conservative email extraction.**
+
+- Path: `src/local_document_agent/text.py:54–90`. Checking parser/header defects
+  is insufficient: the standard parser accepts duplicate singleton MIME headers
+  without defects, and `get_content_type()` / `get()` silently choose the first.
+- Reproduction: `extract(raw, ".eml")` with raw bytes
+  `b"Content-Type: text/plain\r\nContent-Type: text/html\r\n\r\n<p>html secret</p>"`
+  **succeeds**, returning `'\n\n<p>html secret</p>'`. Conflicting duplicate
+  `Content-Transfer-Encoding: 7bit` then `base64`, body `Ym9keQ==`, likewise
+  succeeds and returns the encoded text as complete body content.
+- Expected: reject ambiguous/malformed MIME with `MALFORMED_EMAIL`, rather than
+  silently choosing an interpretation and making potentially HTML content
+  available to text search/read. This is not a request for HTML conversion or
+  more permissive MIME repair.
+- Fix: explicitly reject duplicate/conflicting singleton MIME headers on relevant
+  parts before choosing content type, disposition, charset or transfer encoding.
+  Audit malformed declared charset handling as part of that check: the probe
+  `Subject: =?not-a-codec?b?YWJj?=` plus a valid plain body also succeeded as
+  `Subject: abc`; header decoding can silently fall back despite the declared
+  unknown charset. Reject unsupported encoded-word charsets rather than repairing.
+- Regression: conflicting Content-Type/transfer headers at root and nested inline
+  parts; invalid encoded-word charset; valid multipart alternative and attachment
+  omission must remain unchanged. Through real tools, assert failed reads register
+  no source and failed text extraction yields no snippet.
+
+**A2 — Medium: failures after output creation omit uncertain-file reporting.**
+
+- Paths: `filesystem.py:21–31,274–303`, `tools.py:194–221,238–241`.
+  Exclusive opening creates a file before the second deadline check. Exceptions
+  then lose the distinction between pre-open failure and an output already made.
+- Reproduction 1: replace `context.check_deadline` with a check that raises
+  `DocumentError("LIMIT_EXCEEDED", "The operation deadline has expired.")` when
+  `output/deadline.md` exists; invoke create with ordinary report text. Actual:
+  `LIMIT_EXCEEDED`, `data:null`, `warnings:[]`, deadline-only error, **zero-byte
+  deadline.md remains**.
+- Reproduction 2: patch `os.fsync` to raise
+  `PermissionError("private diagnostic")`; create `permission.md`. Actual:
+  `PERMISSION_DENIED`, message `Access to the local path was denied.`,
+  `warnings:[]`, **file containing b"ordinary" remains**. Neither failure adds
+  a successful create record (correct); neither reports the possible output.
+- Expected per Sections 7.3/16: failed operations remain failures, but explicitly
+  identify the possible partial/new file by safe relative basename. Permission
+  errors after creation and post-open deadline failures need the same warning
+  discipline as ordinary fsync failures. No blind cleanup or automatic retry.
+- Fix: track whether exclusive creation succeeded and preserve sanitized
+  uncertain-output metadata/message on every subsequent failure, including
+  `DocumentError`, permission, flush/close and verification failures. Ensure
+  Slice 2 can render this without inventing a successful created-file event.
+- Regression: both probes above, close failure, and pre-open permission/deadline
+  failures; assert possible-file notice only where appropriate, no raw exception
+  text/absolute path, no success record, and existing-file preservation.
+
+### Nonblocking corrections and Slice 2 interface cautions
+
+**A3 — Medium: Windows case aliases suppress changed-version warnings.**
+
+- Paths: `tools.py:177–184`, `context.py:44`. Ledger identity uses the caller's
+  exact string, not Windows path identity. Read `notes.txt` containing `old`,
+  replace its bytes with `new`, then read `NOTES.TXT` on this Windows host.
+  Actual: R1/R2 have different correct hashes, but the second read has
+  `warnings:[]`. Both calls opened the same file; expected changed-version warning.
+- Fix: maintain a platform-aware validated canonical path identity for comparison
+  while preserving readable relative paths and distinct hash/range entries.
+  Do not globally casefold paths on case-sensitive platforms.
+- Regression: Windows mixed-case same-file reads with changed and unchanged bytes;
+  retain the existing ordinary changed-path test.
+
+**A4 — Medium: tracing rejection is invocation-path dependent.**
+
+- Path: `tools.py:45–73,224–242`. `.invoke()` checks tracing, but inherited
+  `.run()` enters LangChain callback handling and executes the tool without that
+  check. Build tools with tracing disabled, set `LANGSMITH_TRACING=true`, then
+  call `read_tool.run(valid_arguments)`: actual successful read and source event;
+  `.invoke()` would reject the same environment.
+- The probe kept an explicit disabled tracing context and blocked network, so
+  this proves the missing guard, **not an actual disclosure**. README documents
+  invoke/ainvoke as the supported boundary; do not accidentally use run/arun in
+  Slice 2. Factory/startup checks alone do not make all inherited paths equivalent.
+- Fix: guard public execution paths before callback setup, or explicitly constrain
+  the controller to the guarded boundary and test that invariant. Regression:
+  run/arun and invoke/ainvoke with enabled tracing must not read, write or register
+  events; preserve strict argument errors and ToolMessage correlation.
+
+**Deferred, not Slice 1 defects:** provider/agent/CLI absence is correct under
+Section 0. Source/history eviction, failed-turn rollback and `/new` belong to
+Slice 2. The current ledger is globally capped at 32 and `reads` retains full pages
+even after `ledger.discard()`; a naive long-lived shared ToolContext will either
+hit that cap or accumulate pages if only ledger entries are pruned. Design a
+separate bounded active-turn event lifecycle and retained-source ownership with
+monotonic IDs, whole-turn pruning and failed-turn cleanup. Preserve successful
+write observations across provider failure, including A2's uncertain outputs.
+
+Other reviewed boundaries match the intended Slice 1 design: strict flat argument
+schemas, direct ToolMessage success/error correlation, bounded raw reads/search/
+output framing, no discovery-only citations, exclusive writes, local configuration
+precedence without parent search/interpolation, and final Windows handle checks
+before reading/writing bytes. Hostile concurrent path replacement, advisory Windows
+ACL preflight, synchronous bounded I/O and possible partial failed writes are
+documented limitations, not demands for a new sandbox or automatic deletion.
+
+**Next gate:** fix A1–A2, preferably A3–A4 as well, add their focused tests and rerun
+the offline suite. Then proceed only under a separate Slice 2 assignment, retaining
+the existing SDK transport/retry, timeout, history and cancellation gates. No live
+usability or future error-free behavior has been established by this audit.
+
+## Builder response to audit — A1–A4 fixed
+
+- **A1:** reject duplicate singleton MIME headers on root/nested parts before
+  choosing type/encoding/disposition; validate encoded-word charsets explicitly.
+  Regression tests prove no read sources or search snippets from ambiguous MIME.
+- **A2:** track successful exclusive-open creation. Every subsequent filesystem/
+  document failure includes a safe possible-output basename and warning. The
+  context records uncertainty separately from successful creates. Pre-open failures
+  have no such notice. Tested deadline, permission, close and verification failures.
+- **A3:** compare validated platform-normalized path identities while preserving
+  caller-readable relative paths. Windows aliases now warn for changed hashes.
+- **A4:** guard invoke/ainvoke/run/arun before LangChain callback execution.
+  All four paths reject enabled tracing without reads or source registration.
+- Gate command: `uv run --frozen --no-sync pytest --basetemp=.cache/pytest-audit-fixes`
+  with the documented isolated/offline environment — **99 passed, 1 skipped**,
+  exit 0, 7.77 seconds. Same user-approved symlink privilege skip.
+
+The user authorized proceeding to Slice 2 after these fixes. Slice 2 remains
+offline-only; no live inference is authorized. User also approved a tightly scoped
+test-only exception for Windows asyncio's internal socketpair construction.
+External connections and DNS remain blocked during tests. No global Windows
+privileges or Developer Mode settings were changed.
