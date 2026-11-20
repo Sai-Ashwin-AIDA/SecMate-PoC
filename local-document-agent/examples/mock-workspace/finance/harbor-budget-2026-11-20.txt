@@ -1,0 +1,19 @@
+Harbor approved budget — fictional sample
+Document date: 20 November 2026, 13:30 UTC.
+Status: CURRENT approved envelope; replaces harbor-budget-2026-11-18.txt.
+Currency: USD. All sample amounts exclude tax.
+Budget owner: Avery Example.
+
+Approved envelope: USD 1200.
+Committed: documentation preparation USD 400.
+Committed: review support USD 250.
+Total committed: USD 650.
+Current uncommitted funds: USD 550.
+
+Proposed, NOT committed: optional workshop USD 240.
+If that workshop is approved, total commitments would become USD 890,
+and uncommitted funds would become USD 310.
+Those conditional figures are not the current commitment balance.
+
+Avery and Casey have not yet jointly approved the workshop purchase.
+The increased overall envelope is not an approval of every proposed expense.

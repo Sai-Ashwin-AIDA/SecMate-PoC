@@ -1,0 +1,21 @@
+Harbor action register — fictional sample
+Snapshot: 20 November 2026, 14:00 UTC.
+Dates below are due dates, not claims that work has already been completed.
+
+H-101 | Update participant guide | Casey Example | Due 23 November 2026 | In progress
+Evidence: first draft exists; accessibility notes still need a final pass.
+
+H-102 | Prepare reviewer sign-off pack | Riley Example | Due 23 November 2026 | In progress
+Dependency: engineering checklist and participant guide.
+
+H-103 | Obtain workshop quote | Jamie Example | Due 23 November 2026 | Complete
+Evidence: training quote email dated 20 November; completion is quote collection only.
+
+H-104 | Approve or decline workshop purchase | Avery Example | Due 25 November 2026 | Pending
+Dependency: quote review and Casey's written co-approval.
+
+H-105 | Confirm final launch decision | Casey Example | Due 26 November 2026 | Pending
+Dependency: readiness review outcome. Draft launch date remains 1 December.
+
+H-106 | Send participant information | Jamie Example | Due 26 November 2026 | Not started
+Dependency: approved participant guide. No message has been sent by this sample register.

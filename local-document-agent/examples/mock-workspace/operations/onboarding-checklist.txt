@@ -1,0 +1,20 @@
+Harbor participant onboarding — fictional sample
+Snapshot: 20 November 2026.
+Coordinator: Jamie Example.
+Expected cohort size: six volunteer participants.
+
+Complete:
+- Draft list of participant roles prepared.
+- Initial launch checklist prepared.
+
+Outstanding:
+- Casey must finish the participant guide by 23 November.
+- Jamie must prepare an information message after the guide is approved.
+- Riley must confirm the demonstration materials are ready for review.
+- Casey must obtain the final launch decision after the readiness review.
+
+Optional:
+- One 60-minute workshop, proposed for 27 November at 10:00 UTC.
+- Supplier availability is quoted but the purchase is not approved.
+
+This checklist contains no real participant names or login credentials.

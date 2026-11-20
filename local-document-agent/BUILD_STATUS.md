@@ -1,10 +1,12 @@
 # Local document agent — build status
 
 **Current state:** Slice 1 audit fixes and Slice 2 offline gate passed. CLI and
-sanitized diagnostics are implemented. Slice 3 is authorized but live inference
-is waiting for the user to fill the private app-local `.env` and confirm readiness.
-No live request has been made. See the latest handoff below; earlier sections are
-historical records, not claims about the current slice.
+sanitized diagnostics are implemented. The user now reports the CLI responding;
+the three builder-run live workflow demonstrations remain unrecorded. An
+18-document fictional input workspace and full usage manual have been added and
+verified offline. Earlier credential-gate sections are historical records, not
+claims that the user's current CLI is blocked. No live inference was performed
+for the mock-data/manual assignment.
 
 ## Authority and preserved work
 
@@ -558,3 +560,61 @@ Lock format remains version 1 / revision 5, with unchanged SHA-256:
   `uv run --frozen --no-sync local-document-agent` (or the module entry point).
   See README for app-local uv path and configuration. No API adapter, onboarding
   UI, SecMate changes, production infrastructure, commit or push is authorized.
+
+## Mock input workspace and user manual
+
+### Scope and installation
+
+- User requested populated mock `.txt`, `.md`, and `.eml` inputs and a full usage
+  manual. Started on Sai with a clean working tree; existing work was preserved.
+- Resolved the actual configured roots without printing credentials:
+  `local-document-agent/data/input` and `local-document-agent/data/output`.
+- Existing `data/input/test.txt` was not opened or written. The configured output
+  files were not read or modified.
+- Added **18 fictional files**, totaling **16,960 bytes**:
+  **10 Markdown, 4 text, 4 plain-text emails**.
+- Reusable source collection: `examples/mock-workspace/`.
+  Installed input collection: `data/input/mock-workspace/`.
+  Runtime copies are ignored by Git; reusable examples and the manual are normal
+  source artifacts. Used exclusive target-directory and file creation, not
+  overwrite/merge copying.
+- Content covers one coherent Harbor project: current/historical budgets and
+  meeting dates, actions, risks, people, approvals, onboarding, a report template,
+  and related emails. All identities and `example.invalid` addresses are fictional.
+  This is retrieval material, not training, permanent learning or a model change.
+- Added `USER_MANUAL.md` with startup, exact paths, discovery, cited summaries,
+  version comparison, task extraction, saved reports, unsent replies/new drafts,
+  output inspection, memory/limits, privacy and troubleshooting. README links it.
+
+### Actual verification
+
+- An initial long inline shell probe was rejected by the tool's portable command
+  scanner before execution. Moved the probe into ignored
+  `.cache/validate_mock_workspace.py`; this was not an application failure.
+- Ran:
+
+  ```powershell
+  .\.venv\Scripts\python.exe .cache/validate_mock_workspace.py
+  ```
+
+  **Exit 0.** The probe blocked network, disabled tracing, loaded no key/private
+  configuration, constructed no provider, and used only the fictional subfolder
+  plus a new temporary output directory.
+- All 18 installed files match the reusable copies by SHA-256.
+- Actual LangChain tools successfully read every file completely with source IDs
+  and correct raw hashes. All four `.eml` files extracted successfully.
+- Repeated text searches returned identical results; filename search found four
+  emails. Discovery alone registered no sources.
+- Actual report and email-draft writes succeeded in temporary output.
+  Reports included observed source references; drafts had the NOT SENT heading.
+  Attempted reuse of the report filename returned FILE_EXISTS without changing
+  its bytes.
+- Every input hash was unchanged afterward. Temporary validation outputs were
+  removed by their owning TemporaryDirectory context. Normal output was untouched.
+- All 14 unique explicit sample-file paths in the manual resolve to installed
+  inputs. `git diff --check` passed; runtime copies and the probe are Git-ignored.
+- No runtime/dependency/integration changes were needed, so the full application
+  suite was not rerun for this data/documentation-only addition. Previous full-suite
+  results above remain historical, not new live/model evidence.
+- No staging, commits, pushes, SecMate changes, parent dependency edits, reference
+  checkout edits, or live inference were performed for this assignment.

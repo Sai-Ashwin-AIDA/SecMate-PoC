@@ -4,9 +4,13 @@ An independent Python package with **three real LangChain tools**, a bounded
 message/tool controller, and a working terminal interface. Tools, agent wiring,
 SDK transport, and CLI behavior are verified offline with explicit mocks.
 
-**Live Nemotron behavior remains unverified until private key setup and the live
-demonstrations are complete.** See `BUILD_STATUS.md` for actual outcomes. Normal
-CLI use requires your OpenRouter key and explicit transmission consent.
+**Getting started:** [User manual and example prompts](USER_MANUAL.md). A fictional
+18-document Harbor workspace is available under `data/input/mock-workspace/` in
+this workspace, with reusable source files in `examples/mock-workspace/`.
+
+**The user reports live CLI responses, but the three builder-run live workflow
+demonstrations remain unrecorded.** See `BUILD_STATUS.md` for actual outcomes.
+Normal CLI use requires your OpenRouter key and explicit transmission consent.
 There is no fake-success CLI mode, HTTP adapter, email sending, alternate model,
 paid fallback, or SecMate integration.
 

@@ -1,0 +1,13 @@
+Harbor planning budget — fictional sample
+Document date: 18 November 2026.
+Status: HISTORICAL; superseded by harbor-budget-2026-11-20.txt.
+Currency: USD. All sample amounts exclude tax.
+
+Planning envelope: USD 1000.
+Committed: documentation preparation USD 400.
+Committed: review support USD 250.
+Total committed: USD 650.
+Uncommitted funds at that time: USD 350.
+
+There was no workshop purchase approval in this document.
+Use the dated current budget to establish today's approved envelope.
